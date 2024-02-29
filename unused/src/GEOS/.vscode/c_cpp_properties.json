@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "GEOS",
+            "includePath": [
+                "${workspaceFolder}/",
+                "${workspaceFolder}/../../stdlibc++/",
+                "${workspaceFolder}/../../stdlibc/"
+            ],
+            "defines": [
+                "GEOS"
+            ],
+            "compilerPath": "/git/GEOS_CROSSCOMPILER/bin/x86_64-elf-g++",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,238 @@
+{
+    "makedir" : "make/",
+    "PDMO" : "../../",
+    "incdir" : "inc/",
+    "srctypes" : {
+        "asm" : [
+            "asm","s"
+        ],
+        "cpp" : [
+            "cpp","cxx"
+        ],
+        "c" : [
+            "c"
+        ]
+    },
+    "util" : {
+        "cc" : "gcc",
+        "cxx" : "g++",
+        "as" : "as",
+        "ld" : "ld",
+        "objcopy" : "objcopy"
+    },
+    "dirnames" : {
+        "modules/klib/inc/" : "Kernel Library",
+        "shared/" : "Shared Headers"
+    },
+    "include" : {
+        "kernel" : [
+            "modules/klib/inc/",
+            "inc/",
+            "shared/"
+        ],
+        "init" : [
+            "inc/",
+            "shared/"
+        ]
+    },
+    "args" : {
+        "kernelNoWarn" : {
+            "as" : [
+            ],
+            "c++" : [
+                "-Wno-literal-suffix",
+                "-Wno-pointer-arith"
+            ],
+            "c" : [
+            ],
+            "ld" : [
+            ]
+        },
+        "kernelReloc" : {
+            "as" : [
+            ],
+            "c++" : [
+                "-pie"
+            ],
+            "c" : [
+            ],
+            "ld" : [
+                "-pie"
+            ]
+        },
+        "permissive" : {
+            "as" : [
+            ],
+            "c++" : [
+                "-fpermissive",
+                "-Wno-int-to-pointer-cast",
+                "-Wno-pointer-to-int-cast"
+            ],
+            "c" : [
+            ],
+            "ld" : [
+            ]
+        },
+        "kernel" : {
+            "as" : [
+            ],
+            "c++" : [
+                "-O0",
+                "-fno-rtti",
+                "-fno-exceptions",
+                "-nostdlib",
+                "-ffreestanding",
+                "-fno-stack-protector",
+                "-fno-builtin",
+                "-nostartfiles",
+                "-Wunreachable-code",
+                "-std=c++20"
+            ],
+            "c" : [
+                "-Wunreachable-code"
+            ],
+            "ld" : [
+                "-nostdlib"
+            ]
+        },
+        "dependency" : {
+            "as" : [
+                "-M","-MD"
+            ],
+            "c++" : [
+                "-MP","-MD"
+            ],
+            "c" : [
+            ],
+            "ld" : [
+            ]
+        },
+        "system" : {
+            "aarch64-OSX" : {
+                "as" : [
+                ],
+                "c++" : [
+                    "-march=x86-64"
+                ],
+                "c" : [
+                    "-march=x86-64"
+                ],
+                "ld" : [
+                ]
+            },
+            "x86_64-gnu_linux" : {
+                "as" : [
+                ],
+                "c++" : [
+                    "-march=x86-64"
+                ],
+                "c" : [
+                    "-march=x86-64"
+                ],
+                "ld" : [
+                ]
+            }
+        }
+    },
+    "kmods" : {
+        "klib" : {
+            "output" : "out/kernel/klib.elf64",
+            "opath" : "build/klib/",
+            "spath" : "modules/klib/",
+            "lds" : "LDS/klib.ld",
+            "inc" : [
+                "kernel"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency"
+            ]
+        },
+        "INIT" : {
+            "output" : "out/kernel/INIT.elf64",
+            "opath" : "build/INIT/",
+            "spath" : "modules/INIT/",
+            "lds" : "LDS/INIT.ld",
+            "inc" : [
+                "init"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency",
+                "permissive"
+            ]
+        },
+        "FUNCDIS" : {
+            "output" : "out/kernel/FUNCDIS.elf64",
+            "opath" : "build/FUNCDIS/",
+            "spath" : "modules/FUNCDIS/",
+            "lds" : "LDS/FUNCDIS.ld",
+            "inc" : [
+                "kernel"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency"
+            ]
+        },
+        "MALLOC" : {
+            "output" : "out/kernel/MALLOC.elf64",
+            "opath" : "build/MALLOC/",
+            "spath" : "modules/MALLOC/",
+            "lds" : "LDS/MALLOC.ld",
+            "inc" : [
+                "kernel"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency"
+            ]
+        },
+        "gfs0.fs" : {
+            "output" : "out/gfs0.fs.elf64",
+            "opath" : "build/gfs0.fs/",
+            "spath" : "modules/gfs0.fs/",
+            "lds" : "LDS/gfs0.fs.ld",
+            "inc" : [
+                "kernel"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency"
+            ]
+        },
+        "fat32.fs" : {
+            "output" : "out/fat32.fs.elf64",
+            "opath" : "build/fat32.fs/",
+            "spath" : "modules/fat32.fs/",
+            "lds" : "LDS/fat32.fs.ld",
+            "inc" : [
+                "kernel"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency"
+            ]
+        },
+        "SATAN" : {
+            "output" : "out/SATAN.elf64",
+            "opath" : "build/SATAN/",
+            "spath" : "modules/SATAN/",
+            "lds" : "LDS/SATAN.ld",
+            "inc" : [
+                "kernel"
+            ],
+            "args" : [
+                "kernel",
+                "kernelNoWarn",
+                "dependency"
+            ]
+        }
+    }
+}

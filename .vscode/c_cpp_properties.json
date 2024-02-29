@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "GEOS",
+            "includePath": [
+                "${workspaceFolder}/modules/klib/inc/",
+                "${workspaceFolder}/inc"
+            ],
+            "defines": [
+                "GEOS"
+            ],
+            "compilerPath": "",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

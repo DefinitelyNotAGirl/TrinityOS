@@ -1,0 +1,21 @@
+
+{
+    "configurations": [
+        {
+            "name": "klib",
+            "includePath": [
+                "${workspacefolder}/../inc",
+                "${workspacefolder}/../../../../EFI/inc",
+                "${workspacefolder}/../../../../EFI/inc/X64",
+                "${workspacefolder}/../../../../EFI/inc/Protocol",
+                "${workspacefolder}/../../../../EFI/inc/Guid"
+            ],
+            "defines": [""],
+            "compilerPath": "",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../modules/EFI"
+		}
+    ],
+    "settings": {
+        "files.associations": {
+            "*.i86": "asm-intel-x86-generic",
+            "*.a86": "c2opt",
+            "*.arm": "arm",
+            "*.a86h": "gas",
+            "*.d": "makefile",
+            "*.s": "gas",
+            "stdint": "cpp"
+        }
+    }
+}

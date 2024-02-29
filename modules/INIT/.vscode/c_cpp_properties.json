@@ -1,0 +1,20 @@
+
+{
+    "configurations": [
+        {
+            "name": "klib",
+            "includePath": [
+                "${workspaceFolder}/../klib/inc",
+                "${workspaceFolder}/../../inc",
+                "${workspaceFolder}/modules/klib/inc",
+                "${workspaceFolder}/inc"
+            ],
+            "defines": [""],
+            "compilerPath": "",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

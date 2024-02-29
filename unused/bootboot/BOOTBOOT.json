@@ -1,0 +1,10 @@
+{
+    "diskguid": "00000000-0000-0000-0000-000000000000",
+    "disksize": 256,
+    "config": "bootConfig.cfg",
+    "initrd": { "type": "tar", "gzip": true, "file": "build/geos.x86_64.elf" },
+    "partitions": [
+        { "type": "fat32", "size": 16 },
+        { "type": "ext2", "size": 128, "name": "GEOS main partition"}
+    ]
+}

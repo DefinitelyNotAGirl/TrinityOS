@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="1024"
+   viewBox="0 0 135.46666 270.93333"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   sodipodi:docname="2.1.1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="5.4021324"
+     inkscape:cx="393.45574"
+     inkscape:cy="116.62061"
+     inkscape:current-layer="layer1"
+     showgrid="false" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;stroke:#ff0055;stroke-width:1.32291667;fill-opacity:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1"
+       width="125.1035"
+       height="120.71994"
+       x="5.1815825"
+       y="5.1815825" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#ff0055;stroke-width:1.32292;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-2"
+       width="125.1035"
+       height="120.71994"
+       x="5.1815805"
+       y="135.69101" />
+    <text
+       xml:space="preserve"
+       style="font-size:7.05556px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Normal';fill:#000000;fill-opacity:1;stroke:#ff0055;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       x="113.02503"
+       y="11.342857"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-size:7.05556px;fill:#ffffff;fill-opacity:1;stroke-width:0.264583;stroke-dasharray:none"
+         x="113.02503"
+         y="11.342857">0x00</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.05556px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Normal';fill:#000000;fill-opacity:1;stroke:#ff0055;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       x="112.91757"
+       y="124.89162"
+       id="text1-6"><tspan
+         sodipodi:role="line"
+         id="tspan1-0"
+         style="font-size:7.05556px;fill:#ffffff;fill-opacity:1;stroke-width:0.264583;stroke-dasharray:none"
+         x="112.91757"
+         y="124.89162">0xFF</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.05556px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Normal';fill:#000000;fill-opacity:1;stroke:#ff0055;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       x="109.26341"
+       y="141.94031"
+       id="text1-6-1"><tspan
+         sodipodi:role="line"
+         id="tspan1-0-8"
+         style="font-size:7.05556px;fill:#ffffff;fill-opacity:1;stroke-width:0.264583;stroke-dasharray:none"
+         x="109.26341"
+         y="141.94031">0x100</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.05556px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Normal';fill:#000000;fill-opacity:1;stroke:#ff0055;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       x="108.64642"
+       y="254.89264"
+       id="text1-6-1-0"><tspan
+         sodipodi:role="line"
+         id="tspan1-0-8-2"
+         style="font-size:7.05556px;fill:#ffffff;fill-opacity:1;stroke-width:0.264583;stroke-dasharray:none"
+         x="108.64642"
+         y="254.89264">0x200</tspan></text>
+  </g>
+</svg>

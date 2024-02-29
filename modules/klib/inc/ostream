@@ -1,0 +1,67 @@
+/*
+ * Created Date: Sunday May 21st 2023
+ * Author: DefinitelyNotAGirl@github
+ * -----
+ * Last Modified: Wednesday May 24th 2023 7:20:27 am
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115169@gmail.com)
+ * -----
+ * Copyright (c) 2023 DefinitelyNotAGirl@github
+ * 
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy,
+ * modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+#pragma once
+
+#include <iostream>
+#include <string>
+#include <stdint>
+
+namespace klib
+{
+    class ostream_base
+    {
+    protected:
+        bool putStrAvailable = false;
+
+    public:
+        bool hasPutStr() const;
+
+        virtual void putchar(char c);
+        virtual void putstr(char* str);
+    };
+    
+    class ostream : public ostream_base
+    {
+    public:
+        virtual void putchar(char c);
+        virtual void putstr(char* str);
+
+        void(*putStr)(char* str);
+        void(*putChar)(char c);
+    };
+
+    ostream_base& operator<<(ostream_base& out, char c);
+    ostream_base& operator<<(ostream_base& out, char* str);
+    ostream_base& operator<<(ostream_base& out, const char* str);
+    ostream_base& operator<<(ostream_base& out, string str);
+    ostream_base& operator<<(ostream_base& out, u64 x);
+    ostream_base& operator<<(ostream_base& out, i64 x);
+}

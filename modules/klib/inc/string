@@ -1,0 +1,116 @@
+/**
+ * Created Date: Friday April 14th 2023
+ * Author: DefinitelyNotAGirl@github
+ * -----
+ * Last Modified: Friday April 14th 2023 1:52:37 pm
+ * Modified By: DefinitelyNotAGirl@github (definitelynotagirl115199@gmail.com)
+ * -----
+ * Copyright (c) 2023 DefinitelyNotAGirl@github
+ * 
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy,
+ * modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+#pragma once
+
+#include <list>
+#include <macros>
+
+namespace klib
+{
+    class stringUTF8 : public list<u8>
+    {
+    private:
+    public:
+        stringUTF8();
+        stringUTF8(const char* str);
+        stringUTF8(const stringUTF8& str);
+
+        stringUTF8(u64 x);
+        stringUTF8(u32 x);
+        stringUTF8(u16 x);
+        stringUTF8(u8 x);
+        stringUTF8(i64 x);
+        stringUTF8(i32 x);
+        stringUTF8(i16 x);
+        stringUTF8(i8 x);
+        stringUTF8(f32 x);
+        stringUTF8(f64 x);
+
+        void replace(stringUTF8 target, stringUTF8 replacement);
+        list<stringUTF8> split(stringUTF8 delimiter,u64 limit = 0);
+
+        void operator<<(stringUTF8 s);
+        void operator<<(char* s);
+        void operator<<(const char* s);
+        void operator<<(char c);
+        void operator<<(u64 i);
+        void operator<<(i64 i);
+        void operator<<(f64 d);
+        void operator<<(f32 f);
+
+        operator u64() const;
+        operator u32() const;
+        operator u16() const;
+        operator u8() const;
+        operator i64() const;
+        operator i32() const;
+        operator i16() const;
+        operator i8() const;
+        operator f32() const;
+        operator f64() const;
+    };
+
+    #ifdef KLIB_ENABLE_STRING_UTF16
+        TYPE_WRAPPER(wideChar,u16);
+
+        class stringUTF16 : public list<u16>
+        {
+        private:
+        public:
+            stringUTF16(const char* str);
+
+            void replace(stringUTF16 target, stringUTF16 replacement);
+            list<string> split(stringUTF16 delimiter,u64 limit = 0);
+
+            void operator<<(stringUTF16 s);
+            void operator<<(wideChar* s);
+            void operator<<(const wideChar* s);
+            void operator<<(wideChar c);
+            void operator<<(u64 i);
+            void operator<<(i64 i);
+            void operator<<(f64 d);
+            void operator<<(f32 f);
+        };
+    #else
+        #ifdef KLIB_USE_STRING_UTF16
+            #error stringUTF16 is not enabled and can thus not be used as the default string encoding
+        #endif
+    #endif
+
+    //assign default string
+    #ifdef KLIB_USE_STRING_UTF16
+        typedef stringUTF16 string;
+        typedef u16 defaultChar_T;
+    #else
+        typedef stringUTF8 string;
+        typedef u8 defaultChar_T;
+    #endif
+}
+
