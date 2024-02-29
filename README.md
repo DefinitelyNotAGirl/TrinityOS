@@ -1,5 +1,5 @@
-# **GEOS**
-The Gaming Evolved Operating System, or for short "GEOS" is intended to become a next generation operating system made for gaming.
+# **TrinityOS**
+TrinityOS is intended to become a next generation operating system made for gaming.
 
 This project was started as a result of MS windows (read: MS garbage) being the bane of my existense.
 
@@ -44,11 +44,11 @@ everything
 <br><br>
 # **Compatibility with Applications written for Microsoft windows**
 ## C/C++, rust, Assembly, etc.
-I plan on creating a set of tools that would allow for the vast majority of "windows applications" written in C/C++,Rust or Assembly (or any other language that compiles down to machine instructions for that matter) to simply be ported to GEOS with little to no effort(mainly through the use of a cross-compiler).
+I plan on creating a set of tools that would allow for the vast majority of "windows applications" written in C/C++,Rust or Assembly (or any other language that compiles down to machine instructions for that matter) to simply be ported to TrinityOS with little to no effort(mainly through the use of a cross-compiler).
 For anyone unfarmiliar, this would mean that porting unreal engine games should require little to no effort so long the Developers of the individual game are willing to cooperate.
 (The Unreal Engine, for the most part just spits out machine instructions which have little todo with the operating system and everything todo with the CPU at hand)
 ## Java
-I intend on making sure that GEOS will ship with a fully functional JVM (Java Virtual Machine), therefore applications written in Java ***should*** pose no issues in terms of portability.
+I intend on making sure that TrinityOS will ship with a fully functional JVM (Java Virtual Machine), therefore applications written in Java ***should*** pose no issues in terms of portability.
 
 ## Python
 I intend on shipping with a fully functional python executable, therefore python applications ***should*** pose no issues either
@@ -61,30 +61,27 @@ I, at the time of writing this, am not 100% sure as to how these 2 operate, that
 for any languages i didnt mention, just assume they wont be supported.
 
 # **Q&A**
-    Q: Will [insert application/game] run on GEOS?
+    Q: Will [insert application/game] run on TrinityOS?
 
     A: It depends.
-    As I mentioned earlier in this readme, I will try my very best to built tools that would allow porting of applications from Microsoft Windows to GEOS to be as easy and handsoff as possible, but wether a given company will actually put in the effort is outside of my control, in general it would be best to not assume any applications that are highly dependant upon features uniqe to Windows (of which i can't spontianously name a single one) to be supported.
+    As I mentioned earlier in this readme, I will try my very best to built tools that would allow porting of applications from Microsoft Windows to TrinityOS to be as easy and handsoff as possible, but wether a given company will actually put in the effort is outside of my control, in general it would be best to not assume any applications that are highly dependant upon features uniqe to Windows (of which i can't spontianously name a single one) to be supported.
 <br>
 
     Q: Will wallpaper engine be supported?
 
     A: I Hope so.
-    As with any other application, i cant promise anything since this is simply outside of my control, but I will make sure GEOS offers all the required features for an application like wallpaper engine
+    As with any other application, i cant promise anything since this is simply outside of my control, but I will make sure TrinityOS offers all the required features for an application like wallpaper engine
 <br>
 
     Q: Will my 15 year old Hardware be supported?
     
     A: Most propably not.
-    GEOS is a very modern Operating System and is only intended to support modern Hardware.
+    TrinityOS is a very modern Operating System and is only intended to support modern Hardware.
     For reference, at the time of writing this i am developing and testing on my AMD FX8350 straight out of 2012 (which, considering it's age is one beast of a CPU btw) and this is propably about the oldest CPU that will actually run this Operating System.
     
 # **Credits**
 
 # **Rant**
-## **Nvidia**
-Not offering any documentation on their hardware to the general public.
-to qoute Linus Torvalds, "Fuck you, nvidia"
 ## **UEFI**
 Honestly, everyone who's got anything to do with EFI/UEFI can go to hell and stay there, BIOS was just fine.
 
