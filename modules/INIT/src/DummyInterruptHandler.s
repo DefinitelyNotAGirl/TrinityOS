@@ -2,7 +2,7 @@
  * Created Date: Sunday February 11th 2024
  * Author: Lilith (definitelynotagirl115169@gmail.com)
  * -----
- * Last Modified: Sunday February 11th 2024 9:28:26 pm
+ * Last Modified: Thursday February 29th 2024 5:18:25 am
  * Modified By: Lilith (definitelynotagirl115169@gmail.com)
  * -----
  * Copyright (c) 2024 Lilith (definitelynotagirl115169@gmail.com)
@@ -27,7 +27,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+.intel_syntax noprefix
 
-.global DummyInterruptHandler
-DummyInterruptHandler:
+.extern DebugInterruptHandler
+.global DebugInterruptHandler_Entry
+DebugInterruptHandler_Entry:
+	sub rsp, 256
+	call DebugInterruptHandler
+	add rsp, 256
     iretq

@@ -62,4 +62,4 @@ char* strreverse(char* str);
 void print(uint16_t* msg);
 uint64_t print(const char16_t* msg);
 uint64_t malloc(uint64_t size);
-void readACPI();
+uint64_t readACPI();

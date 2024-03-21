@@ -33,6 +33,8 @@ DEALINGS IN THE SOFTWARE.
 #include <PCIe.hxx>
 #include <INIT.h>
 #include <bits.hxx>
+#include <Log.hxx>
+#include <MemoryConstants.hxx>
 
 namespace AHCI {
 	//*
@@ -41,11 +43,48 @@ namespace AHCI {
 	uint64_t diskNum = 0;
 	const uint64_t PRD_MAX_SECTORS = 16;//16 sectors of 512 bytes each, 8KiB total
 
+	void identifyDevice(PORT_EXTERNALS* port,deviceID* id)
+	{
+		uint64_t dst = 0x3200000;
+		uint64_t dst_phys = getPhysicalAddress(dst,Kernel);
+		//
+		//
+		//
+		volatile PORT* HBAPort = port->HBAPortAddress;
+		volatile HBA_T* HBA = port->HBAAddress;
+		volatile ReceivedFIS* rFIS = &port->receivedFIS;
+		//
+		//we'll just use cmd slot 0 for now and simply assume that its available (as it should be)
+		//
+		volatile CommandHeader* cmdHeader = &port->CommandList[0];
+		volatile CommandTable* cmdTbl = &port->CommandTables[0];
+		volatile H2DRegisterFIS* cFIS = (H2DRegisterFIS*)&cmdTbl->CommandFIS;
+		//*
+		//* prepare command header
+		//*
+		cmdHeader->dw0_lower = (4 | (1<<5)); // clear W to 0, set A to 1, cFIS length to 4 dw (16 byte)
+		cmdHeader->PhysicalRegionDescriptorTableLength = 1;// need 512 bytes
+		//*
+		//* prepare command table
+		//*
+		cmdTbl->PhysicalRegionDescriptorTable[0].PhysicalDataBaseAddress	  = dst_phys;
+		cmdTbl->PhysicalRegionDescriptorTable[0].PhysicalDataBaseAddressUpper = dst_phys>>32;
+		cmdTbl->PhysicalRegionDescriptorTable[0].dw3 = (512)-1;
+		//*
+		//* prepare command FIS
+		//*
+	}
+
 	//*
 	//* ahci disk read
 	//*
 	Disk::ReadReturn read(PORT_EXTERNALS* port,uint64_t dst,uint64_t StartingSector,uint64_t SectorCount)
 	{
+		TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]reading from AHCI disk...\n");
+		TrinityDebugHex(port);
+		TrinityDebugHex(dst);
+		TrinityDebugHex(StartingSector);
+		TrinityDebugHex(SectorCount);
 		volatile PORT* HBAPort = port->HBAPortAddress;
 		volatile HBA_T* HBA = port->HBAAddress;
 		//we'll just use cmd slot 0 for now and simply assume that its available (as it should be)
@@ -70,14 +109,14 @@ namespace AHCI {
 			cmdTbl->PhysicalRegionDescriptorTable[i].PhysicalDataBaseAddress = dst_phys;
 			cmdTbl->PhysicalRegionDescriptorTable[i].PhysicalDataBaseAddressUpper = dst_phys>>32;
 			cmdTbl->PhysicalRegionDescriptorTable[i].dw3 = (512*PRD_MAX_SECTORS)-1;
-			cmdTbl->PhysicalRegionDescriptorTable[i].dw3 |= 1<<31;
+			//cmdTbl->PhysicalRegionDescriptorTable[i].dw3 |= 1<<31;
 			dst+=PRD_MAX_SECTORS*512;
 		}
 		dst_phys = getPhysicalAddress(dst,Kernel);
 		cmdTbl->PhysicalRegionDescriptorTable[cmdHeader->PhysicalRegionDescriptorTableLength-1].PhysicalDataBaseAddress = dst_phys;
 		cmdTbl->PhysicalRegionDescriptorTable[cmdHeader->PhysicalRegionDescriptorTableLength-1].PhysicalDataBaseAddressUpper = dst_phys>>32;
 		cmdTbl->PhysicalRegionDescriptorTable[cmdHeader->PhysicalRegionDescriptorTableLength-1].dw3 = ((SectorCount%PRD_MAX_SECTORS)*512)-1;
-		cmdTbl->PhysicalRegionDescriptorTable[cmdHeader->PhysicalRegionDescriptorTableLength-1].dw3 |= 1<<31;
+		//cmdTbl->PhysicalRegionDescriptorTable[cmdHeader->PhysicalRegionDescriptorTableLength-1].dw3 |= 1<<31;
 		//*
 		//* prepare command FIS
 		//*
@@ -98,16 +137,12 @@ namespace AHCI {
 		uint64_t spin = 0;
 		while((HBAPort->TaskFileData & (1<<3 | 1<<7)) != 0)
 		{
-			if(spin == 10000000)
+			if(spin == 1000000)
 			{
-				sysDBGint(
-					0xdebac03,
-					HBAPort->CommandAndStatus,
-					HBAPort->TaskFileData,
-					HBAPort->CommandIssue,
-					HBA->GenericHostControl.InterruptStatus,
-					HBA->GenericHostControl.GlobalHostControl
-				);
+				TrinityLog::print("["ANSI_RED"ERROR"ANSI_RESET"]Disk read timeout!\n");
+				TrinityDebugHex(HBAPort->CommandAndStatus);
+				TrinityDebugHex(HBAPort->TaskFileData);
+				TrinityDebugHex(HBAPort->CommandIssue);
 				return Disk::ReadReturn::TIMEOUT;
 			}
 			spin++;
@@ -124,23 +159,12 @@ namespace AHCI {
 				break;
 			if(HBAPort->InterruptStatus & 1<<30)//check for error
 				goto AHCIReadReturnFailure;
-			if(spin == 10000000)
+			if(spin == 1000000)
 			{
-				sysDBGint(
-					/* rdi */0xdebac01,
-					/* rsi */HBAPort->CommandAndStatus,
-					/* rdx */HBAPort->TaskFileData,
-					/* rcx */HBAPort->CommandIssue,
-					/* r8  */HBA->GenericHostControl.InterruptStatus,
-					/* r9  */HBA->GenericHostControl.GlobalHostControl
-				);
-				sysDBGint(
-					/* rdi */0xdebac02,
-					/* rsi */HBAPort->SerialAtaStatus,
-					/* rdx */HBAPort->SerialAtaControl,
-					/* rcx */HBAPort->SerialAtaActive,
-					/* r8  */HBAPort->SerialAtaError
-				);
+				TrinityLog::print("["ANSI_RED"ERROR"ANSI_RESET"]Disk read timeout!\n");
+				TrinityDebugHex(HBAPort->CommandAndStatus);
+				TrinityDebugHex(HBAPort->TaskFileData);
+				TrinityDebugHex(HBAPort->CommandIssue);
 				return Disk::ReadReturn::TIMEOUT;
 			}
 			spin++;
@@ -153,27 +177,18 @@ namespace AHCI {
 	    return Disk::ReadReturn::OK;
 		AHCIReadReturnFailure:
 		{
-			sysDBGint(
-				/* rdi */0xdebac01,
-				/* rsi */HBAPort->CommandAndStatus,
-				/* rdx */HBAPort->TaskFileData,
-				/* rcx */HBAPort->CommandIssue,
-				/* r8  */HBA->GenericHostControl.InterruptStatus,
-				/* r9  */HBA->GenericHostControl.GlobalHostControl
-			);
-			sysDBGint(
-				/* rdi */0xdebac02,
-				/* rsi */HBAPort->SerialAtaStatus,
-				/* rdx */HBAPort->SerialAtaControl,
-				/* rcx */HBAPort->SerialAtaActive,
-				/* r8  */HBAPort->SerialAtaError
-			);
+			TrinityLog::print("["ANSI_RED"ERROR"ANSI_RESET"]Disk Read Error!\n");
+			TrinityDebugHex(HBAPort->SerialAtaStatus);
+			TrinityDebugHex(HBAPort->SerialAtaError);
+			TrinityDebugHex(HBAPort->CommandAndStatus);
+			TrinityDebugHex(HBAPort->TaskFileData);
+			TrinityDebugHex(HBAPort->CommandIssue);
 			return Disk::ReadReturn::FAILURE;
 		}
 	}
 
 	//*
-	//* check disk for TRINITY system
+	//* check disk for TRINITY_BOOT label
 	//*
 	void checkDisk(PORT_EXTERNALS* port)
 	{
@@ -182,10 +197,23 @@ namespace AHCI {
 		//*
 		if(EXPR_GETBIT_00(port->Flags) == 0)
 			return;//disk not present (Flags:0 is clear)
+		TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]checking port for boot disk...\n");
 		//identify file system
-	    Disk::ReadReturn status = read(port,0x3200000,0,2);
-	    if(status != Disk::ReadReturn::OK)
-	        sysDBGExit(ERROR_R15,ERROR_DISK_READ,(uint64_t)status);
+		uint64_t StartSector = 0;
+		uint64_t SectorSize = 512;
+		//{
+		//	PORT* HBAPort = (PORT*)port->HBAPortAddress;
+		//	uint8_t SectorCount = HBAPort->Signature & 0xFF;
+		//	TrinityDebugHex(SectorCount);
+		//}
+	    if(read(port,MEM_ADDR_DISK_READ_INIT+(StartSector*SectorSize),StartSector,4) == Disk::ReadReturn::OK)
+		{
+			CheckFilesystem(SectorSize);
+		}
+		else
+		{
+			//+ read failed
+		}
 	}
 
 	//*
@@ -204,6 +232,7 @@ namespace AHCI {
 	const uint64_t CONTROLLER_REQUIRED_SPACE = sizeof(PORT_EXTERNALS)*32;
 	void initializePort(volatile PORT* port,PORT_EXTERNALS* PortExternals,volatile HBA_T* HBAAddress,PCIE_DEVICE_AHCI_CONTROLLER* controller)
 	{
+		TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]initializing AHCI port...\n");
 		//*
 		//* stop hba port
 		//*
@@ -213,7 +242,6 @@ namespace AHCI {
 		//*
 		//* initialize to our liking
 		//*
-
 		PORT_EXTERNALS* PhysPortExternals = (PORT_EXTERNALS*)getPhysicalAddress(PortExternals,Kernel);
 		PortExternals->HBAAddress = HBAAddress;
 		PortExternals->HBAPortAddress = port;
@@ -241,6 +269,7 @@ namespace AHCI {
 	}
 	PORT_EXTERNALS* initializeController(PCIE_DEVICE_AHCI_CONTROLLER* controller)
 	{
+		TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]Initializing AHCI Controller...\n");
 	    //?
 	    //? configure controller and its ports to take up 36MiB in memory
 	    //?
@@ -284,8 +313,30 @@ namespace AHCI {
 	    //* initialize ports
 		//*
 	    for(uint64_t i = 0;i<32;i++)
+		{
 	        if((HBA->GenericHostControl.PortsImplemented & (1<<i)) != 0)
-	            initializePort(&HBA->Ports[i],PortExternals[i],HBA,controller);
+	        {
+				if((HBA->Ports[i].SerialAtaStatus & 0xF) == 0x3)
+				{
+					TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]Disk present on port ");
+					TrinityLog::printHex(i);
+					TrinityLog::print("\n");
+					initializePort(&HBA->Ports[i],PortExternals[i],HBA,controller);
+				}
+				else
+				{
+					TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]Disk not present on port ");
+					TrinityLog::printHex(i);
+					TrinityLog::print("\n");
+					TrinityDebugHex(HBA->Ports[i].SerialAtaStatus);
+					PortExternals[i]->Flags = 0;
+				}
+			}
+			else
+			{
+				PortExternals[i]->Flags = 0;
+			}
+		}
 		return ret;
 	}
 
@@ -294,6 +345,7 @@ namespace AHCI {
 	//*
 	void checkController(PCIE_DEVICE_CONFIG* __controller)
 	{
+		TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]Checking AHCI controller...\n");
 	    PCIE_DEVICE_AHCI_CONTROLLER* controller = (PCIE_DEVICE_AHCI_CONTROLLER*)__controller;
 	    PORT_EXTERNALS* ports  = initializeController(controller);
 		//*

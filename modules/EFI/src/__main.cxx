@@ -38,13 +38,13 @@ EFI_STATUS status = 0;
 void print(uint16_t* msg)
 {
     //return;
-    sysTable->ConOut->OutputString(sysTable->ConOut,msg);
+    //sysTable->ConOut->OutputString(sysTable->ConOut,msg);
 }
 
 uint64_t print(const char16_t* msg)
 {
     //return 0;
-    sysTable->ConOut->OutputString(sysTable->ConOut,(UINT16*)msg);
+    //sysTable->ConOut->OutputString(sysTable->ConOut,(UINT16*)msg);
     return 0;
 }
 
@@ -295,8 +295,8 @@ void loadKernelINIT(EFI_HANDLE image, UINTN mapKey)
 {
     uint64_t k_init_entry = 0;
     {
-        print(u"loading: trinity\\kernel\\INIT.elf64\n\r");
-        char* data = loadFile(u"trinity\\kernel\\INIT.elf64");
+        print(u"loading: TrinityOS\\kernel\\INIT.elf64\n\r");
+        char* data = loadFile(u"TrinityOS\\kernel\\INIT.elf64");
         print(u"data: ",(uint64_t)data);
         k_init_entry = loadELF64(data);
         FreePool(data);
@@ -577,16 +577,17 @@ extern "C" uint64_t __sys_helloworld(EFI_HANDLE image,EFI_SYSTEM_TABLE* systemTa
     //UINT16* msg = (UINT16*)u"Hello World!\n\r";
     systemTable->ConOut->ClearScreen(systemTable->ConOut);
     //systemTable->ConOut->OutputString(systemTable->ConOut, msg);
-    print64(MC64("TRINITYTEST"));
+    print64(MC64("TRINTEST"));
     print(u"\n\r");
 
-    PCIeEntryInfo = (PCIeEntryInfo_T*)AllocateDataPage(0x200000,0x200000);
-    listConfigTable();
-    readACPI();
+	PCIeEntryInfo = (PCIeEntryInfo_T*)AllocateDataPage(0x200000,0x200000);
 
-    //Load Memory Map
+	//Load Memory Map
     UINTN mapKey = loadMemoryMap();
     TrinityVitalMemoryAddresses->PCIE_PHYS = (uint64_t)PCIeEntryInfo;
+	
+    listConfigTable();
+    TrinityVitalMemoryAddresses->RSDT_PHYS = readACPI();
 
     //load INIT from disk
     Volume = GetVolume(image);
@@ -602,7 +603,7 @@ EFI_STATUS __main(EFI_HANDLE imageHandle,EFI_SYSTEM_TABLE* systemTable)
     systemTable->ConOut->ClearScreen(systemTable->ConOut);
 	systemTable->ConOut->OutputString(systemTable->ConOut, msg);
 
-    print64(MC64("TRINITYTEST"));
+    print64(MC64("TRINTEST"));
     print(u"\n\r");
     listConfigTable();
 

@@ -1,1 +1,2 @@
-build/INIT/updateCR.o: modules/INIT/src/updateCR.s
+build/INIT/interrupt_disassemble.o: \
+ modules/INIT/src/interrupt_disassemble.s

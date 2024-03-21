@@ -1,0 +1,868 @@
+<!--
+Created Date: Monday March 11th 2024
+Author: Lilith (definitelynotagirl115169@gmail.com)
+-----
+Last Modified: Thursday March 14th 2024 7:42:40 am
+Modified By: Lilith (definitelynotagirl115169@gmail.com)
+-----
+Copyright (c) 2024 Lilith Nitschke-Höfer (lilithnitschkehoefer@gmail.com)
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>[TrinityOS] System Interface 0.1.0</title>
+	<style>
+		:root {
+			--background-main: #000000;
+			--background-code: #200020;
+			--foreground-main: #FFFFFF;
+		}
+		body {
+			background: black;
+		}
+		@page {
+			size: A4;
+			margin: 0;
+		}
+		@media print {
+			.page {
+				margin: 0;
+				border: initial;
+				border-radius: initial;
+				width: initial;
+				min-height: initial;
+				box-shadow: initial;
+				background: initial;
+				page-break-after: always;
+			}
+		}
+		/*
+		<!--- ██████   █████   ██████  ███████
+		<!--- ██   ██ ██   ██ ██       ██
+		<!--- ██████  ███████ ██   ███ █████
+		<!--- ██      ██   ██ ██    ██ ██
+		<!--- ██      ██   ██  ██████  ███████
+		*/
+		.page {
+			background: var(--background-main);
+			width: 42cm;
+			min-height: 59.4cm;
+			max-height: 59.4cm;
+			padding: 2cm;
+			margin: 1cm auto;
+			border: 1px #D3D3D3 solid;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			position: relative;
+		}
+		/*
+		<!--+ ████████ ██ ████████ ██      ███████
+		<!--+    ██    ██    ██    ██      ██
+		<!--+    ██    ██    ██    ██      █████
+		<!--+    ██    ██    ██    ██      ██
+		<!--+    ██    ██    ██    ███████ ███████
+		*/
+		#Page_Title .PageContent {
+			text-align: center;
+		}
+		#title_Trinity {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bolder;
+			font-size: 120px;
+		}
+		#title {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bolder;
+			font-size: 120px;
+		}
+		#title_line {
+			width: 32cm;
+			height: 0.25cm;
+			margin-left: 5cm;
+			background: white;
+		}
+		#title_date {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: bolder;
+			font-size: 30px;
+		}
+		/*
+		<!--. ██   ██ ███████  █████  ██████  ███████ ██████
+		<!--. ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+		<!--. ███████ █████   ███████ ██   ██ █████   ██████
+		<!--. ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+		<!--. ██   ██ ███████ ██   ██ ██████  ███████ ██   ██
+		*/
+		.header_title {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 15cm;
+		}
+		.header_line {
+			width: 40cm;
+			height: 0.25cm;
+			margin-left: 1cm;
+			background: white;
+		}
+		.date_current {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 2cm;
+		}
+		/*
+		<!--* ███████  ██████   ██████  ████████ ███████ ██████
+		<!--* ██      ██    ██ ██    ██    ██    ██      ██   ██
+		<!--* █████   ██    ██ ██    ██    ██    █████   ██████
+		<!--* ██      ██    ██ ██    ██    ██    ██      ██   ██
+		<!--* ██       ██████   ██████     ██    ███████ ██   ██
+		*/
+		.PageFooter {
+			position: absolute;
+			bottom: 1.5cm;
+		}
+		.page_number {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 8cm;
+		}
+		.copyright {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 2cm;
+		}
+		/*
+		<!--! ██   ██ ██   ██
+		<!--! ██   ██  ██ ██
+		<!--! ███████   ███
+		<!--! ██   ██  ██ ██
+		<!--! ██   ██ ██   ██
+		*/
+		h1,
+		h2,
+		h3,
+		h4 
+		{
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			width: 38cm;
+		}
+		h1 {
+			font-weight: bolder;
+			font-size: 50px;
+			border-bottom: solid white 0.125cm;
+			margin-left: 2cm;
+			white-space: pre;
+		}
+		h2 {
+			font-weight: bold;
+			font-size: 40px;
+			margin-left: 2cm;
+		}
+		h3 {
+			font-weight: bolder;
+			font-size: 30px;
+			margin-left: 2cm;
+		}
+		h4 {
+			font-weight: bolder;
+			font-size: 20px;
+			margin-left: 2cm;
+		}
+		/*
+		<!--+ ██████   █████  ██████   █████   ██████  ██████   █████  ██████  ██   ██ ███████
+		<!--+ ██   ██ ██   ██ ██   ██ ██   ██ ██       ██   ██ ██   ██ ██   ██ ██   ██ ██
+		<!--+ ██████  ███████ ██████  ███████ ██   ███ ██████  ███████ ██████  ███████ ███████
+		<!--+ ██      ██   ██ ██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██      ██   ██      ██
+		<!--+ ██      ██   ██ ██   ██ ██   ██  ██████  ██   ██ ██   ██ ██      ██   ██ ███████
+		*/
+		p {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: normal;
+			font-size: 18px;
+			margin-left: 2cm;
+			width: 38cm;
+		}
+		/*
+		<!--. ████████  █████  ██████  ██      ███████      ██
+		<!--.    ██    ██   ██ ██   ██ ██      ██          ███
+		<!--.    ██    ███████ ██████  ██      █████        ██
+		<!--.    ██    ██   ██ ██   ██ ██      ██           ██
+		<!--.    ██    ██   ██ ██████  ███████ ███████      ██
+		*/
+		.Table1 {
+			margin-left: 2cm;
+			width: 38cm;
+		}
+		.Table1 td {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bold;
+			font-size: 18px;
+		}
+		.Table1 td a {
+			white-space: pre;
+		}
+		.Table1 tr:nth-child(1) td{
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bold;
+			font-size: 24px;
+		}
+		.Table1 tr:nth-child(1) td,
+		.Table1 tr:last-child td
+		{
+			border-bottom: 0.125cm white solid;
+		}
+		/*
+		<!--. ████████  █████  ██████  ██      ███████     ██ ███    ██ ████████
+		<!--.    ██    ██   ██ ██   ██ ██      ██          ██ ████   ██    ██
+		<!--.    ██    ███████ ██████  ██      █████       ██ ██ ██  ██    ██
+		<!--.    ██    ██   ██ ██   ██ ██      ██          ██ ██  ██ ██    ██
+		<!--.    ██    ██   ██ ██████  ███████ ███████     ██ ██   ████    ██
+		*/
+		.Table_Int {
+			width: 10cm;
+		}
+		.Table_Int td {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bold;
+			font-size: 18px;
+		}
+		.Table_Int td a {
+			white-space: pre;
+		}
+		.Table_Int tr:nth-child(1) td{
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bold;
+			font-size: 24px;
+		}
+		.Table_Int tr:nth-child(1) td
+		/*,.Table_Int tr:last-child td*/
+		{
+			border-bottom: 0.125cm white solid;
+		}
+		#Table_Int_Table > tbody > tr > td > table {
+			border-radius: 12px;
+		}
+		#Table_Int_Table > tbody > tr > td {
+			padding: 0cm;
+			margin: 0cm;
+		}
+		#Table_Int_Table > tbody > tr {
+			padding-top: 0cm;
+			margin: 0cm;
+		}
+		/*
+		<!--- exceptions
+		*/
+		#Int_Table_Exceptions tr:nth-child(1) td,
+		#Int_Table_Exceptions tr:last-child td {
+			border-color: #FF0000;
+		} #Int_Table_Exceptions {
+			background: #FF000055;
+		}
+		/*
+		<!--- dev
+		*/
+		#Int_Table_Dev tr:nth-child(1) td,
+		#Int_Table_Dev tr:last-child td {
+			border-color: #FF5500;
+		} #Int_Table_Dev {
+			background: #FF550055;
+		}
+		/*
+		<!--- PCI
+		*/
+		#Int_Table_PCI tr:nth-child(1) td,
+		#Int_Table_PCI tr:last-child td {
+			border-color: #5500FF;
+		} #Int_Table_PCI {
+			background: #5500FF55;
+		}
+		/*
+		<!--- USER
+		*/
+		#Int_Table_User tr:nth-child(1) td,
+		#Int_Table_User tr:last-child td {
+			border-color: #55FF00;
+		} #Int_Table_User {
+			background: #55FF0055;
+		}
+		/*
+		<!--- Debug
+		*/
+		#Int_Table_Debug tr:nth-child(1) td,
+		#Int_Table_Debug tr:last-child td {
+			border-color: #00FFFF;
+		} #Int_Table_Debug {
+			background: #00FFFF55;
+		}
+		/*
+		<!--- Error
+		*/
+		#Int_Table_Error tr:nth-child(1) td,
+		#Int_Table_Error tr:last-child td {
+			border-color: #FF0055;
+		} #Int_Table_Error {
+			background: #FF005555;
+		}
+		/*
+		<!--- MiscIRQ
+		*/
+		#Int_Table_MiscIRQ tr:nth-child(1) td,
+		#Int_Table_MiscIRQ tr:last-child td {
+			border-color: #0000FF;
+		} #Int_Table_MiscIRQ {
+			background: #0000FF55;
+		}
+		/*
+		<!--+  ██████  ██████  ██████  ███████
+		<!--+ ██      ██    ██ ██   ██ ██
+		<!--+ ██      ██    ██ ██   ██ █████
+		<!--+ ██      ██    ██ ██   ██ ██
+		<!--+  ██████  ██████  ██████  ███████
+		*/
+		.code {
+			background: var(--background-code);
+			white-space: pre;
+			margin-left: 2cm;
+			width: 34cm;
+			padding: 2cm;
+			border-radius: 24px;
+			line-height: 65%;
+			color: #606060;
+		}
+		/*
+		<!--* ██████  ███████ ███████ ███████ ██████  ██    ██ ███████ ██████
+		<!--* ██   ██ ██      ██      ██      ██   ██ ██    ██ ██      ██   ██
+		<!--* ██████  █████   ███████ █████   ██████  ██    ██ █████   ██   ██
+		<!--* ██   ██ ██           ██ ██      ██   ██  ██  ██  ██      ██   ██
+		<!--* ██   ██ ███████ ███████ ███████ ██   ██   ████   ███████ ██████
+		*/
+		.text_reserved 
+		,.text_reserved td
+		{
+			color: #505050 !important;
+		}
+	</style>
+</head>
+<body>
+	<div class="page" id="Page_Title">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<br><br><br><br><br><br><br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br>
+			<span id="title_Trinity">TrinityOS</span><br>
+			<span id="title">System Interface</span><br>
+			<div id="title_line"></div><br>
+			<span id="title_date" class="date_current"></span>
+			<br>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+	<div class="page" id="Page_Index_1">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<table class="Table1">
+				<tr><td>Index</td></tr>
+				<tr><td><a href="#__TnD">1 Terms and Definitions</a></td></tr>
+				<tr><td><a href="#__TnD_Numbers"	>    1.1 Numbers</a></td></tr>
+				<tr><td><a href="#__TnD_Units"  	>    1.2 Units</a></td></tr>
+				<tr><td><a href="#__TnD_AccessTypes">    1.3 Access Types</a></td></tr>
+			</table>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+	<div class="page" id="Page_TermsAndDefinitions">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<h1 id="__TnD">1            Terms and Definitions</h1>
+			<h2 id="__TnD_Numbers">1.1 Numbers</h2>
+			<p>
+				Hexadecimal (base 16) numbers are marked using the prefix “0x”, likewise, base 4 numbers are
+				marked with “0q”, base 8 numbers with “0o”, binary numbers with “0b” and decimal numbers are
+				marked with “0d”, any numbers not marked with one of these prefixes is to be treated as
+				decimal (base 10).
+				Furthermore, all numbers are to be treated as big endian unless indicated otherwise.
+			</p>
+			<h2 id="__TnD_Units">1.2 Units</h2>
+			<table class="Table1">
+				<tr><td>Mnemonic</td><td>Size in Bytes</td></tr>
+				<tr><td>KB</td>	<td>1.000</td></tr>
+				<tr><td>KiB</td><td>1.024</td></tr>
+				<tr><td>MB</td>	<td>1.000.000</td></tr>
+				<tr><td>MiB</td><td>1.048.576</td></tr>
+				<tr><td>GB</td>	<td>1.000.000.000</td></tr>
+				<tr><td>GiB</td><td>1.073.741.824</td></tr>
+				<tr><td>TB</td>	<td>1.000.000.000.000</td></tr>
+				<tr><td>TiB</td><td>1.099.511.627.776</td></tr>
+				<tr><td>PB</td>	<td>1.000.000.000.000.000</td></tr>
+				<tr><td>PiB</td><td>1.125.899.906.842.624</td></tr>
+				<tr><td>EB</td>	<td>1.000.000.000.000.000.000</td></tr>
+				<tr><td>EiB</td><td>1.152.921.504.606.846.976</td></tr>
+				<tr><td>ZB</td>	<td>1.000.000.000.000.000.000.000</td></tr>
+				<tr><td>ZiB</td><td>1.180.591.620.717.411.303.424</td></tr>
+			</table>
+			<h2  id="__TnD_AccessTypes">1.3 Access Types</h2>
+			<table class="Table1">
+				<tr><td>Mnemonic</td><td>Description</td></tr>
+				<tr><td>R/W</td><td>The field can be written to and read from as normal</td></tr>
+				<tr><td>R/O</td><td>The field can be read from, but cannot (or should not) be written to, do not rely on the underlying memory being read-only</td></tr>
+				<tr><td>MBZ</td><td>The field must always have all its bits cleared to 0</td></tr>
+				<tr><td>MBO</td><td>The field must always have all its bits set to 1</td></tr>
+				<tr><td>N/A</td><td>The field cannot be accessed</td></tr>
+			</table>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+	<div class="page" id="Page_Int_0">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<h1 id="__Int">2            Interrupts</h1>
+			<!--- removed to make the table fit the page -->
+			<!-- <h2 id="__Int_Layout">2.1 Interrupt Layout</h2> -->
+			<table id="Table_Int_Table">
+				<tr>
+					<td>
+						<table class="Table_Int" id="Int_Table_Exceptions">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0x00</td><td>Divide-by-Zero</td></tr>
+							<tr><td>0x01</td><td>Debug</td></tr>
+							<tr><td>0x02</td><td>Non-Maskable-Interrupt</td></tr>
+							<tr><td>0x03</td><td>Breakpoint</td></tr>
+							<tr><td>0x04</td><td>Overflow</td></tr>
+							<tr><td>0x05</td><td>Bound-Range</td></tr>
+							<tr><td>0x06</td><td>Invalid-Opcode</td></tr>
+							<tr><td>0x07</td><td>Device-Not-Available</td></tr>
+							<tr><td>0x08</td><td>Double-Fault</td></tr>
+							<tr><td>0x09</td><td>Coprocessor-Segment-Overrun</td></tr>
+							<tr><td>0x0A</td><td>Invalid-TSS</td></tr>
+							<tr><td>0x0B</td><td>Segment-Not-Present</td></tr>
+							<tr><td>0x0C</td><td>Stack</td></tr>
+							<tr><td>0x0D</td><td>General-Protection-Fault</td></tr>
+							<tr><td>0x0E</td><td>Page-Fault</td></tr>
+							<tr class="text_reserved"><td>0x0F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_User">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0x80</td><td>Syscall</td></tr>
+							<tr><td>0x81</td><td>Malloc</td></tr>
+							<tr><td>0x82</td><td>Sleep</td></tr>
+							<tr class="text_reserved"><td>0x83</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x84</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x85</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x86</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x87</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x88</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x89</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x8A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x8B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x8C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x8D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x8E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x8F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_Error">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0xE0</td><td>Unkown IRQ</td></tr>
+							<tr class="text_reserved"><td>0xE1</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE2</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE3</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE4</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE5</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE6</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE7</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE8</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xE9</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xEA</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xEB</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xEC</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xED</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xEE</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xEF</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_Debug">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0xD0</td><td>disassemble</td></tr>
+							<tr class="text_reserved"><td>0xD1</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD2</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD3</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD4</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD5</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD6</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD7</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD8</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xD9</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xDA</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xDB</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xDC</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xDD</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xDE</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xDF</td><td>Reserved</td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="Table_Int" id="Int_Table_Exceptions">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0x10</td><td>x87 Floating-Point Exception</td></tr>
+							<tr><td>0x11</td><td>Alignment-Check</td></tr>
+							<tr><td>0x12</td><td>Machine-Check</td></tr>
+							<tr><td>0x13</td><td>SIMD Floating-Point</td></tr>
+							<tr class="text_reserved"><td>0x14</td><td>Reserved</td></tr>
+							<tr><td>0x15</td><td>Control-Protection Exception</td></tr>
+							<tr class="text_reserved"><td>0x16</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x17</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x18</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x19</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x1A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x1B</td><td>Reserved</td></tr>
+							<tr><td>0x1C</td><td>Hypervisor Injection Exception</td></tr>
+							<tr><td>0x1D</td><td>VMM Communication Exception</td></tr>
+							<tr><td>0x1E</td><td>Security Exception</td></tr>
+							<tr><td>0x1F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_PCI">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0x30</td><td>Reserved</td></tr>
+							<tr><td>0x31</td><td>Reserved</td></tr>
+							<tr><td>0x32</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x33</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x34</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x35</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x36</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x37</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x38</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x39</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x3A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x3B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x3C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x3D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x3E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x3F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_Dev">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0x20</td><td>Reserved</td></tr>
+							<tr><td>0x21</td><td>Timer</td></tr>
+							<tr><td>0x22</td><td>Keyboard Controller</td></tr>
+							<tr><td>0x23</td><td>Interrupt Controller</td></tr>
+							<tr><td>0x24</td><td>Floppy Disk Controller</td></tr>
+							<tr><td>0x25</td><td>Real Time Clock</td></tr>
+							<tr><td>0x26</td><td>Mouse</td></tr>
+							<tr class="text_reserved"><td>0x27</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x28</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x29</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x2A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x2B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x2C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x2D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x2E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x2F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_0x90">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0x90</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x91</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x92</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x93</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x94</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x95</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x96</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x97</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x98</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x99</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x9A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x9B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x9C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x9D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x9E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x9F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="Table_Int" id="Int_Table_MiscIRQ">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0x40</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x41</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x42</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x43</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x44</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x45</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x46</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x47</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x48</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x49</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x4A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x4B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x4C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x4D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x4E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x4F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_MiscIRQ">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr><td>0x50</td><td>IRQ 16</td></tr>
+							<tr><td>0x51</td><td>IRQ 17</td></tr>
+							<tr><td>0x52</td><td>IRQ 18</td></tr>
+							<tr><td>0x53</td><td>IRQ 19</td></tr>
+							<tr><td>0x54</td><td>IRQ 20</td></tr>
+							<tr><td>0x55</td><td>IRQ 21</td></tr>
+							<tr><td>0x56</td><td>IRQ 22</td></tr>
+							<tr><td>0x57</td><td>IRQ 23</td></tr>
+							<tr><td>0x58</td><td>IRQ 24</td></tr>
+							<tr><td>0x59</td><td>IRQ 25</td></tr>
+							<tr><td>0x5A</td><td>IRQ 26</td></tr>
+							<tr><td>0x5B</td><td>IRQ 27</td></tr>
+							<tr><td>0x5C</td><td>IRQ 28</td></tr>
+							<tr><td>0x5D</td><td>IRQ 29</td></tr>
+							<tr><td>0x5E</td><td>IRQ 30</td></tr>
+							<tr><td>0x5F</td><td>IRQ 31</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_MiscIRQ">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0x60</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x61</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x62</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x63</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x64</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x65</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x66</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x67</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x68</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x69</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x6A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x6B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x6C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x6D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x6E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x6F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_MiscIRQ">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0x70</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x71</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x72</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x73</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x74</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x75</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x76</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x77</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x78</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x79</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x7A</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x7B</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x7C</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x7D</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x7E</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0x7F</td><td>Reserved</td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="Table_Int" id="Int_Table_0xA0">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0xA0</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA1</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA2</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA3</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA4</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA5</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA6</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA7</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA8</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xA9</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xAA</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xAB</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xAC</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xAD</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xAE</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xAF</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_0xB0">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0xB0</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB1</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB2</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB3</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB4</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB5</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB6</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB7</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB8</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xB9</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xBA</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xBB</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xBC</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xBD</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xBE</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xBF</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_0xC0">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0xC0</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC1</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC2</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC3</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC4</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC5</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC6</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC7</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC8</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xC9</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xCA</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xCB</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xCC</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xCD</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xCE</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xCF</td><td>Reserved</td></tr>
+						</table>
+					</td>
+					<td>
+						<table class="Table_Int" id="Int_Table_0xF0">
+							<tr><td>Int</td><td>Mnemonic</td></tr>
+							<tr class="text_reserved"><td>0xF0</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF1</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF2</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF3</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF4</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF5</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF6</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF7</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF8</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xF9</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xFA</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xFB</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xFC</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xFD</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xFE</td><td>Reserved</td></tr>
+							<tr class="text_reserved"><td>0xFF</td><td>Reserved</td></tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+<!-- 	- ███████ ███    ███ ██████  ████████ ██    ██     ██████   █████   ██████  ███████
+		- ██      ████  ████ ██   ██    ██     ██  ██      ██   ██ ██   ██ ██       ██
+		- █████   ██ ████ ██ ██████     ██      ████       ██████  ███████ ██   ███ █████
+		- ██      ██  ██  ██ ██         ██       ██        ██      ██   ██ ██    ██ ██
+		- ███████ ██      ██ ██         ██       ██        ██      ██   ██  ██████  ███████-->
+	<div class="page" id="Page_Empty" style="display: none;">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+</body>
+</html>
+<script>
+	var TITLE = "[TrinityOS] System Interface v0.1.0";
+	var COPYRIGHT_HOLDER = "Lilith Nitschke-Höfer (lilithnitschkehoefer@gmail.com)";
+	// ██   ██ ███████  █████  ██████  ███████ ██████
+	// ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+	// ███████ █████   ███████ ██   ██ █████   ██████
+	// ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+	// ██   ██ ███████ ██   ██ ██████  ███████ ██   ██
+	var headers = document.getElementsByClassName("PageHeader");
+	for (var i = 0; i < headers.length; i++) {
+		headers.item(i).innerHTML = `
+			<span class="date_current"></span>
+			<span class="header_title">${TITLE}</span><br>
+			<div class="header_line"></div><br>
+		`;
+	}
+ 	// ███████  ██████   ██████  ████████ ███████ ██████
+ 	// ██      ██    ██ ██    ██    ██    ██      ██   ██
+ 	// █████   ██    ██ ██    ██    ██    █████   ██████
+ 	// ██      ██    ██ ██    ██    ██    ██      ██   ██
+ 	// ██       ██████   ██████     ██    ███████ ██   ██
+	var footers = document.getElementsByClassName("PageFooter");
+	var FooterCount = 1;
+	for (var i = 0; i < footers.length; i++) {
+		footers.item(i).innerHTML = `
+			<div class="header_line"></div><br>
+			<span class="copyright">(c) ${COPYRIGHT_HOLDER}</span>
+			<span class="page_number">${FooterCount++}</span><br>
+		`;
+	}
+	// ██████   █████  ████████ ███████
+	// ██   ██ ██   ██    ██    ██
+	// ██   ██ ███████    ██    █████
+	// ██   ██ ██   ██    ██    ██
+	// ██████  ██   ██    ██    ███████
+	var elements = document.getElementsByClassName("date_current");
+	var RELEASE_DATE = "March 11, 2024";
+	for (var i = 0; i < elements.length; i++) {
+		elements.item(i).innerHTML = RELEASE_DATE;
+	}
+</script>

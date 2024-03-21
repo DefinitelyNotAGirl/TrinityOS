@@ -60,6 +60,7 @@ struct TRINITY_MEMORY_VITAL
     uint64_t PAGETABLE_PHYS_2;
     uint64_t MEMMAP_PHYS_2;
     uint64_t PCIE_PHYS;
+	uint64_t RSDT_PHYS;
 };
 
 struct TRINITY_MEMORY_MAP_ENTRY

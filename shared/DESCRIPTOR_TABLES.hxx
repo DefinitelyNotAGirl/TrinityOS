@@ -31,11 +31,11 @@
 #include "stdint.hxx"
 #include "gcc.hxx"
 
-struct GDTPseudo
+struct __packed__ GDTPseudo
 {
     uint16_t limit;
     uint64_t address;
-} PACKED;
+};
 
 struct GDTEntry
 {
@@ -88,8 +88,8 @@ struct GATE_DESCRIPTOR_64
 	uint32_t reserved0;
 };
 
-struct IDTPseudo
+struct __packed__ IDTPseudo
 {
     uint16_t limit;
     uint64_t address;
-} PACKED;
+};

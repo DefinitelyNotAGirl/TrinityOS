@@ -33,12 +33,29 @@
 #include <APP_INFO.hxx>
 #include <PAGING.hxx>
 #include <DESCRIPTOR_TABLES.hxx>
+#include <MiscStructs.hxx>
+#include <MemoryConstants.hxx>
+#include <ASM.hxx>
+#include <print.hxx>
 
 PROCESS_INFO* Kernel;
 
+DebugData_T* DebugData = (DebugData_T*)0x600000;
+
+//, ██ ███    ██ ████████ ███████ ██████  ██████  ██    ██ ██████  ████████ ███████
+//, ██ ████   ██    ██    ██      ██   ██ ██   ██ ██    ██ ██   ██    ██    ██
+//, ██ ██ ██  ██    ██    █████   ██████  ██████  ██    ██ ██████     ██    ███████
+//, ██ ██  ██ ██    ██    ██      ██   ██ ██   ██ ██    ██ ██         ██         ██
+//, ██ ██   ████    ██    ███████ ██   ██ ██   ██  ██████  ██         ██    ███████
+extern "C" void interrupt_disassemble();
+
+//+ ███████ ███    ██ ████████ ██████  ██    ██
+//+ ██      ████   ██    ██    ██   ██  ██  ██
+//+ █████   ██ ██  ██    ██    ██████    ████
+//+ ██      ██  ██ ██    ██    ██   ██    ██
+//+ ███████ ██   ████    ██    ██   ██    ██
 extern "C" void kernel_entry_cpp()
 {
-    //sysDBGExit(0x0123456789ABCDEF);
     //*
     //* init kernel PROCESS_INFO struct
     //*
@@ -62,6 +79,7 @@ extern "C" void kernel_entry_cpp()
     setPhysicalPageUsed(getPhysicalAddress(0x2400000,Kernel));
     setPhysicalPageUsed(getPhysicalAddress(0x1800000,Kernel));
     setPhysicalPageUsed(VitalMemoryValues->PCIE_PHYS);
+	setPhysicalPageUsed(VitalMemoryValues->RSDT_PHYS);
     setPage(TrinityPageType::ReadWriteData,VitalMemoryValues->PCIE_PHYS,0x200000,Kernel);
     //*
     //* initate GDT
@@ -72,12 +90,59 @@ extern "C" void kernel_entry_cpp()
         sysDBGExit(0xFEDCBA9876543210,(uint64_t)status);
     setupGDT();
     setupIDT();
+	//*
+    //* map PCI Express Devices into memory
+    //*
+    for(uint64_t i = 0;i<PCIeEntryInfo->deviceCount;i++)
+    {
+        //sysDBGExit(0x3333,&PCIeEntryInfo->devices,PCIeEntryInfo->devices[i]);
+        PCIE_DEVICE_CONFIG* device = PCIeEntryInfo->devices[i];
+        uint64_t physp = ((uint64_t)device/TRINITY_PAGE_SIZE)*TRINITY_PAGE_SIZE;
+        uint64_t virt = getVirtualAddress(physp,Kernel);
+        if(virt == UINT64_T_MAX)
+        {
+            setPage(TrinityPageType::MemoryMappedIO,physp,mmioAddress,Kernel);
+            PCIeEntryInfo->devices[i] = mmioAddress+((uint64_t)device%TRINITY_PAGE_SIZE);
+            mmioAddress += TRINITY_PAGE_SIZE;
+        }
+    }
+	//*
+	//* initiate misc data areas
+	//*
+	setPage(TrinityPageType::ReadWriteData,RandomPhysicalAddress,0x600000,Kernel);
+	setPage(TrinityPageType::ReadWriteData,0x000000,MEM_ADDR_BOTTOM,Kernel);
+	//*
+    //* check if we have a trinity log device
+    //*
+	for(uint64_t i = 0;i<PCIeEntryInfo->deviceCount;i++)
+    {
+        PCIE_DEVICE_CONFIG* device = PCIeEntryInfo->devices[i];
+        if((uint64_t)device->Header.ClassCode == 0xFF)
+        {
+            switch((uint64_t)device->Header.SubClass)
+            {
+                case(0xFE):
+                {
+					TrinityLog::init(device);
+                    break;
+                }
+            }
+        }
+    }
+	TrinityLog::disassemble(0x008031b2);
+	//*
+	//* ACPI
+	//*
+	TrinityLog::print("Initiating ACPI...\n");
+	ACPI::Init(VitalMemoryValues->RSDT_PHYS);
+	ACPI::InitAPICs();
+	sti;
     //*
     //* find boot disk and load remaining kernel modules
     //*
+	TrinityLog::print("Searching for boot disk...\n");
     FindBootDisk();
     //!
     //! success output
     //!
-    sysEXIT_SUCCESS();
 }

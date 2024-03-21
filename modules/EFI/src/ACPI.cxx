@@ -32,10 +32,10 @@
 #include <main.h>
 #include <IndustryStandard/Acpi62.h>
 
-void readACPI_r1(void* RSDP);
+uint64_t readACPI_r1(void* RSDP);
 void readACPI_r2(void* RSDP);
 
-void readACPI()
+uint64_t readACPI()
 {
     EFI_ACPI_6_2_ROOT_SYSTEM_DESCRIPTION_POINTER* acpi_table = (EFI_ACPI_6_2_ROOT_SYSTEM_DESCRIPTION_POINTER*)econf.ACPI;
     if(acpi_table == NULL)
@@ -53,7 +53,7 @@ void readACPI()
     }
 
     if(acpi_table->Revision == 0x00)
-        readACPI_r1(acpi_table);
+        return readACPI_r1(acpi_table);
     else if(acpi_table->Revision == 0x02)
         readACPI_r2(acpi_table);
     else
@@ -62,4 +62,5 @@ void readACPI()
         tripleFault(acpi_table->Revision);
         while(1);
     }
+	return 0;
 }

@@ -30,17 +30,21 @@
 
 all: modinc-all m-all m-EFI
 
-clean:
-	rm -r build/**/*.o
-	rm -r build/**/*.d
+clean: m-all-clean
 
 INSTALL_DIR="../geosTestEnv/content"
 
 install:
-	@echo "copying kernel binaries"
-	cp out/kernel/INIT.elf64 $(INSTALL_DIR)/geos/kernel/
-	cp out/kernel/BOOTX64.EFI $(INSTALL_DIR)/EFI/BOOT/BOOTX64.EFI
-	@echo "done"
+	@cp out/kernel/INIT.elf64 $(INSTALL_DIR)/TrinityOS/kernel/
+	@cp out/kernel/BOOTX64.EFI $(INSTALL_DIR)/EFI/BOOT/BOOTX64.EFI
+
+CODE_FILE_SELECT=./modules/**/src ./modules/**/inc shared -type f \( -iname \*.cxx -o -iname \*.cpp -o -iname \*.c2 -o -iname \*.cp2 -o -iname \*.c -o -iname \*.h -o -iname \*.hpp -o -iname \*.s -o -iname \*.asm -o -iname \*.hxx \)
+
+countLines:
+	@find $(CODE_FILE_SELECT) -exec cat {} \; | wc -l
+
+listCodeFiles:
+	@find $(CODE_FILE_SELECT) -print
 
 include make/include.make
 include make/EFI.make

@@ -30,33 +30,19 @@ DEALINGS IN THE SOFTWARE.
 
 #include <INIT.h>
 #include <PCIe.hxx>
+#include <Log.hxx>
 
 PCIeEntryInfo_T* PCIeEntryInfo = (PCIeEntryInfo_T*)0x200000;
 uint64_t mmioAddress = 0x10000000;
 
 void FindBootDisk()
 {
+	TrinityLog::print("["ANSI_BLUE"INFO"ANSI_RESET"]Searching for boot disk...\n");
     //*
     //* map a read page at 0x3200000
     //*
     if(setPage(TrinityPageType::ReadWriteData,RandomPhysicalAddress,0x3200000,Kernel) != TrinitySetPageReturn::OK)
         sysDBGExit(ERROR_R15,ERROR_SETPAGE,(uint64_t)lastSetPageError);
-    //*
-    //* map PCI Express Devices into memory
-    //*
-    for(uint64_t i = 0;i<PCIeEntryInfo->deviceCount;i++)
-    {
-        //sysDBGExit(0x3333,&PCIeEntryInfo->devices,PCIeEntryInfo->devices[i]);
-        PCIE_DEVICE_CONFIG* device = PCIeEntryInfo->devices[i];
-        uint64_t physp = ((uint64_t)device/TRINITY_PAGE_SIZE)*TRINITY_PAGE_SIZE;
-        uint64_t virt = getVirtualAddress(physp,Kernel);
-        if(virt == UINT64_T_MAX)
-        {
-            setPage(TrinityPageType::MemoryMappedIO,physp,mmioAddress,Kernel);
-            PCIeEntryInfo->devices[i] = mmioAddress+((uint64_t)device%TRINITY_PAGE_SIZE);
-            mmioAddress += TRINITY_PAGE_SIZE;
-        }
-    }
     //*
     //* search for mass storage controllers
     //*

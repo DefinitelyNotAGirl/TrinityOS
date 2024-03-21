@@ -16,8 +16,9 @@
     "util" : {
         "cc" : "gcc",
         "cxx" : "g++",
-        "as" : "as",
+        "as" : "../TrinityOS/tools/as-new",
         "ld" : "ld",
+        "strip" : "strip",
         "objcopy" : "objcopy"
     },
     "dirnames" : {
@@ -65,8 +66,7 @@
             ],
             "c++" : [
                 "-fpermissive",
-                "-Wno-int-to-pointer-cast",
-                "-Wno-pointer-to-int-cast"
+                "-Wno-int-to-pointer-cast"
             ],
             "c" : [
             ],
@@ -75,6 +75,7 @@
         },
         "kernel" : {
             "as" : [
+                "-W"
             ],
             "c++" : [
                 "-O0",
@@ -86,13 +87,15 @@
                 "-fno-builtin",
                 "-nostartfiles",
                 "-Wunreachable-code",
-                "-std=c++20"
+                "-std=c++20",
+                "-w"
             ],
             "c" : [
                 "-Wunreachable-code"
             ],
             "ld" : [
-                "-nostdlib"
+                "-nostdlib",
+                "-w"
             ]
         },
         "dependency" : {

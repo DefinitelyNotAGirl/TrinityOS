@@ -18,30 +18,30 @@ klib_SOURCE_c_c=$(wildcard modules/klib/src/*.c)
 klib_OBJECTS_c_c=$(patsubst modules/klib/src/%.c,build/klib/%.o,$(klib_SOURCE_c_c))
 klib_DEPFILES_c_c=$(patsubst modules/klib/src/%.c,build/klib/%.d,$(klib_SOURCE_c_c))
 build/klib/%.o: modules/klib/src/%.asm
-	@as -M -MD -c -o $@ $<
-	$(info  	AS	$<)
+	@../TrinityOS/tools/as-new -W -M -MD -c -o $@ $<
+	$(info  	[35m[COMPILE][0m	$<)
 build/klib/%.o: modules/klib/src/%.s
-	@as -M -MD -c -o $@ $<
-	$(info  	AS	$<)
+	@../TrinityOS/tools/as-new -W -M -MD -c -o $@ $<
+	$(info  	[35m[COMPILE][0m	$<)
 build/klib/%.o: modules/klib/src/%.cpp
-	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/klib/inc -march=x86-64 -c -o $@ $<
-	$(info 	C++	$<)
+	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -w -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/klib/inc -march=x86-64 -c -o $@ $<
+	$(info 	[35m[COMPILE][0m	$<)
 build/klib/%.o: modules/klib/src/%.cxx
-	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/klib/inc -march=x86-64 -c -o $@ $<
-	$(info 	C++	$<)
+	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -w -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/klib/inc -march=x86-64 -c -o $@ $<
+	$(info 	[35m[COMPILE][0m	$<)
 build/klib/%.o: modules/klib/src/%.c
 	@gcc -Wunreachable-code -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/klib/inc -march=x86-64 -c -o $@ $<
-	$(info  	CC	$<)
+	$(info  	[35m[COMPILE][0m	$<)
 m-klib-clean:
-	@-rm -r build/klib/*.o
-	$(info  	DELETE	build/klib/*.o)
-	@-rm -r build/klib/*.d
-	$(info  	DELETE	build/klib/*.d)
+	@-rm -r build/klib/*.o > /dev/null
+	$(info  	[33m[CLEAN][0m	build/klib/*.o)
+	@-rm -r build/klib/*.d > /dev/null
+	$(info  	[33m[CLEAN][0m	build/klib/*.d)
 m-klib: out/kernel/klib.elf64
 out/kernel/klib.elf64:  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c)
-	@ld -nostdlib -T LDS/klib.ld  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c)  -o out/kernel/klib.elf64
-	$(info  	LD	$@)
-	@-include $(klib_DEPFILES_asm_asm)
+	@ld -nostdlib -w -T LDS/klib.ld  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c)  -o out/kernel/klib.elf64
+	$(info  	[34m[LINK][0m	$@)
+-include $(klib_DEPFILES_asm_asm)
 -include $(klib_DEPFILES_asm_s)
 -include $(klib_DEPFILES_cpp_cpp)
 -include $(klib_DEPFILES_cpp_cxx)

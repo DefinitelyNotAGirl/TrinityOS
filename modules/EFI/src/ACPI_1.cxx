@@ -190,13 +190,14 @@ static void readSDT(ACPISDTHeader* sdt)
     print(u"\n\r");
 }
 
-void readACPI_r1(void* rsdp)
+uint64_t readACPI_r1(void* rsdp)
 {
     print(u"ACPI version 1 detected!\n\r");
     doCheckSum((RSDPDescriptor*)rsdp);
     print(u"ACPI checksum valid!\n\r");
 
     RSDT* rsdt = (RSDT*)((RSDPDescriptor*)rsdp)->RsdtAddress;
+	
     uint8_t sum = 0;
     for(uint64_t i = 0; i < rsdt->Length; i++)
         sum += ((uint8_t*)(rsdt))[i];
@@ -232,4 +233,5 @@ void readACPI_r1(void* rsdp)
         ACPISDTHeader* sdt = (ACPISDTHeader*)SDTs[i];
         readSDT(sdt);
     }
+	return (uint64_t)rsdt;
 }

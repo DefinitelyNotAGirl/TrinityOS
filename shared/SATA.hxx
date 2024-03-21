@@ -2,7 +2,7 @@
 Created Date: Saturday February 17th 2024
 Author: Lilith (definitelynotagirl115169@gmail.com)
 -----
-Last Modified: Saturday February 17th 2024 2:31:17 am
+Last Modified: Thursday February 29th 2024 5:18:25 am
 Modified By: Lilith (definitelynotagirl115169@gmail.com)
 -----
 Copyright (c) 2024 Lilith Nitschke-Höfer (lilithnitschkehoefer@gmail.com)
@@ -48,5 +48,9 @@ namespace SATA
 	struct ATAPICommand {
 		uint64_t placeHolder0;
 		uint64_t placeHolder1;
+	};
+
+	enum class Command {
+		IdentifyDevice = 0xEC
 	};
 }

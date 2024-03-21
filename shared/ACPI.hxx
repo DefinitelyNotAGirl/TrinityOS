@@ -1,38 +1,61 @@
-/*
- * Created Date: Tuesday June 27th 2023
- * Author: DefinitelyNotAGirl@github
- * -----
- * Last Modified: Thursday February 8th 2024 1:54:20 pm
- * Modified By: Lilith (definitelynotagirl115169@gmail.com)
- * -----
- * Copyright (c) 2023 DefinitelyNotAGirl@github
- * 
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- */
+/**
+Created Date: Thursday February 29th 2024
+Author: Lilith (definitelynotagirl115169@gmail.com)
+-----
+Last Modified: Thursday February 29th 2024 5:18:25 am
+Modified By: Lilith (definitelynotagirl115169@gmail.com)
+-----
+Copyright (c) 2024 Lilith Nitschke-Höfer (lilithnitschkehoefer@gmail.com)
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+*/
 #pragma once
 
 #include "stdint.hxx"
 #include "APIC.hxx"
+#include <FixedSizeList.hxx>
 
-#define packed __attribute__((packed));
+namespace ACPI {
+	enum class SIGNATURE : uint64_t {
+		MADT = 0x43495041, //ACPI
+		FADT = 0x50434146, //FACP
+		HEPT = 0x54455048, //HPET
+		MCFG = 0x4746434D, //MCFG
+		WAET = 0x54454157, //WAET
+		BGRT = 0x54524742  //BGRT
+	};
+
+	struct TrinityACPITable_T {
+		ACPI::SIGNATURE Signature;//Signature
+		uint64_t Address;//Virtual address of the table
+	};
+
+	struct TrinityACPI_T {
+		uint64_t flags;//0:63 reserved
+		uint64_t TableCount;
+		TrinityACPITable_T Tables[((0x200000-16)/sizeof(TrinityACPITable_T))];
+	};
+
+	extern TrinityACPI_T* SysInfo;
+}
 
 struct RSDPDescriptor {
     char Signature[8];

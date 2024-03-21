@@ -18,31 +18,30 @@ gfs0.fs_SOURCE_c_c=$(wildcard modules/gfs0.fs/src/*.c)
 gfs0.fs_OBJECTS_c_c=$(patsubst modules/gfs0.fs/src/%.c,build/gfs0.fs/%.o,$(gfs0.fs_SOURCE_c_c))
 gfs0.fs_DEPFILES_c_c=$(patsubst modules/gfs0.fs/src/%.c,build/gfs0.fs/%.d,$(gfs0.fs_SOURCE_c_c))
 build/gfs0.fs/%.o: modules/gfs0.fs/src/%.asm
-	@as -M -MD -c -o $@ $<
-	$(info  	AS	$<)
+	@../TrinityOS/tools/as-new -W -M -MD -c -o $@ $<
+	$(info  	[35m[COMPILE][0m	$<)
 build/gfs0.fs/%.o: modules/gfs0.fs/src/%.s
-	@as -M -MD -c -o $@ $<
-	$(info  	AS	$<)
+	@../TrinityOS/tools/as-new -W -M -MD -c -o $@ $<
+	$(info  	[35m[COMPILE][0m	$<)
 build/gfs0.fs/%.o: modules/gfs0.fs/src/%.cpp
-	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/gfs0.fs/inc -march=x86-64 -c -o $@ $<
-	$(info 	C++	$<)
+	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -w -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/gfs0.fs/inc -march=x86-64 -c -o $@ $<
+	$(info 	[35m[COMPILE][0m	$<)
 build/gfs0.fs/%.o: modules/gfs0.fs/src/%.cxx
-	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/gfs0.fs/inc -march=x86-64 -c -o $@ $<
-	$(info 	C++	$<)
+	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -w -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/gfs0.fs/inc -march=x86-64 -c -o $@ $<
+	$(info 	[35m[COMPILE][0m	$<)
 build/gfs0.fs/%.o: modules/gfs0.fs/src/%.c
 	@gcc -Wunreachable-code -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/gfs0.fs/inc -march=x86-64 -c -o $@ $<
-	$(info  	CC	$<)
+	$(info  	[35m[COMPILE][0m	$<)
 m-gfs0.fs-clean:
-	@-rm -r build/gfs0.fs/*.o
-	$(info  	DELETE	build/gfs0.fs/*.o)
-	@-rm -r build/gfs0.fs/*.d
-	$(info  	DELETE	build/gfs0.fs/*.d)
+	@-rm -r build/gfs0.fs/*.o > /dev/null
+	$(info  	[33m[CLEAN][0m	build/gfs0.fs/*.o)
+	@-rm -r build/gfs0.fs/*.d > /dev/null
+	$(info  	[33m[CLEAN][0m	build/gfs0.fs/*.d)
 m-gfs0.fs: out/gfs0.fs.elf64
 out/gfs0.fs.elf64:  $(gfs0.fs_OBJECTS_asm_asm) $(gfs0.fs_OBJECTS_asm_s) $(gfs0.fs_OBJECTS_cpp_cpp) $(gfs0.fs_OBJECTS_cpp_cxx) $(gfs0.fs_OBJECTS_c_c)
-	@ld -nostdlib -T LDS/gfs0.fs.ld  $(gfs0.fs_OBJECTS_asm_asm) $(gfs0.fs_OBJECTS_asm_s) $(gfs0.fs_OBJECTS_cpp_cpp) $(gfs0.fs_OBJECTS_cpp_cxx) $(gfs0.fs_OBJECTS_c_c)  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c) -o out/gfs0.fs.elf64
-	$(info  	LD	$@)
-	@objcopy out/gfs0.fs.elf64 --remove-section text_klib --remove-section rodata_klib --remove-section data_klib --remove-section bss_klib
-	$(info  	OBJCOPY	$@)
+	@ld -nostdlib -w -T LDS/gfs0.fs.ld  $(gfs0.fs_OBJECTS_asm_asm) $(gfs0.fs_OBJECTS_asm_s) $(gfs0.fs_OBJECTS_cpp_cpp) $(gfs0.fs_OBJECTS_cpp_cxx) $(gfs0.fs_OBJECTS_c_c)  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c) -o out/gfs0.fs.elf64
+	$(info  	[34m[LINK][0m	$@)
+	@objcopy out/gfs0.fs.elf64  --remove-section text_klib --remove-section rodata_klib --remove-section data_klib --remove-section bss_klib &> /dev/null
 -include $(gfs0.fs_DEPFILES_asm_asm)
 -include $(gfs0.fs_DEPFILES_asm_s)
 -include $(gfs0.fs_DEPFILES_cpp_cpp)

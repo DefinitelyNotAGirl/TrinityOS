@@ -33,17 +33,18 @@
 #include <DESCRIPTOR_TABLES.hxx>
 
 extern "C" void updateIDT();
-extern "C" void DummyInterruptHandler();
+extern "C" void DebugInterruptHandler_Entry();
 GATE_DESCRIPTOR_64* InterruptDescriptorTable = (GATE_DESCRIPTOR_64*)0x3012000;
 void setupIDT()
 {
     //initialize idt to 0
     for(uint64_t i = 0;i<256;i++)
     {
-		//skip double fault and GP fault handler so we can triple fault the cpu on demand
+		//skip page fault, double fault and GP fault handler so we can triple fault the cpu on demand
 		if(i == 0x08)continue;
 		if(i == 0x0D)continue;
-		uint64_t addr = &DummyInterruptHandler;
+		if(i == 0x0E)continue;
+		uint64_t addr = &DebugInterruptHandler_Entry;
 		GATE_DESCRIPTOR_64* Gate = &InterruptDescriptorTable[i];
 		Gate->Type = 0x8E;//P = 1, DPL = 0, Type = 0xE
 		Gate->TargetSelector = 0x0008;//kernel code segment selector

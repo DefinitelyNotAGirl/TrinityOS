@@ -1,0 +1,436 @@
+<!--
+Created Date: Monday March 11th 2024
+Author: Lilith (definitelynotagirl115169@gmail.com)
+-----
+Last Modified: Monday March 11th 2024 6:11:23 pm
+Modified By: Lilith (definitelynotagirl115169@gmail.com)
+-----
+Copyright (c) 2024 Lilith Nitschke-Höfer (lilithnitschkehoefer@gmail.com)
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>[TrinityOS] SATAN 0.1.0</title>
+	<style>
+		:root {
+			--background-main: #000000;
+			--background-code: #200020;
+			--foreground-main: #FFFFFF;
+		}
+		body {
+			background: black;
+		}
+		@page {
+			size: A4;
+			margin: 0;
+		}
+		@media print {
+			.page {
+				margin: 0;
+				border: initial;
+				border-radius: initial;
+				width: initial;
+				min-height: initial;
+				box-shadow: initial;
+				background: initial;
+				page-break-after: always;
+			}
+		}
+		/*
+		<!--- ██████   █████   ██████  ███████
+		<!--- ██   ██ ██   ██ ██       ██
+		<!--- ██████  ███████ ██   ███ █████
+		<!--- ██      ██   ██ ██    ██ ██
+		<!--- ██      ██   ██  ██████  ███████
+		*/
+		.page {
+			background: var(--background-main);
+			width: 42cm;
+			min-height: 59.4cm;
+			max-height: 59.4cm;
+			padding: 2cm;
+			margin: 1cm auto;
+			border: 1px #D3D3D3 solid;
+			border-radius: 5px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			position: relative;
+		}
+		/*
+		<!--+ ████████ ██ ████████ ██      ███████
+		<!--+    ██    ██    ██    ██      ██
+		<!--+    ██    ██    ██    ██      █████
+		<!--+    ██    ██    ██    ██      ██
+		<!--+    ██    ██    ██    ███████ ███████
+		*/
+		#Page_Title .PageContent {
+			text-align: center;
+		}
+		#title_Trinity {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bolder;
+			font-size: 120px;
+		}
+		#title {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bolder;
+			font-size: 120px;
+		}
+		#title_line {
+			width: 32cm;
+			height: 0.25cm;
+			margin-left: 5cm;
+			background: white;
+		}
+		#title_date {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: bolder;
+			font-size: 30px;
+		}
+		/*
+		<!--. ██   ██ ███████  █████  ██████  ███████ ██████
+		<!--. ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+		<!--. ███████ █████   ███████ ██   ██ █████   ██████
+		<!--. ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+		<!--. ██   ██ ███████ ██   ██ ██████  ███████ ██   ██
+		*/
+		.header_title {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 20cm;
+		}
+		.header_line {
+			width: 40cm;
+			height: 0.25cm;
+			margin-left: 1cm;
+			background: white;
+		}
+		.date_current {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 2cm;
+		}
+		/*
+		<!--* ███████  ██████   ██████  ████████ ███████ ██████
+		<!--* ██      ██    ██ ██    ██    ██    ██      ██   ██
+		<!--* █████   ██    ██ ██    ██    ██    █████   ██████
+		<!--* ██      ██    ██ ██    ██    ██    ██      ██   ██
+		<!--* ██       ██████   ██████     ██    ███████ ██   ██
+		*/
+		.PageFooter {
+			position: absolute;
+			bottom: 1.5cm;
+		}
+		.page_number {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 8cm;
+		}
+		.copyright {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-style: italic;
+			font-weight: normal;
+			font-size: 30px;
+			margin-left: 2cm;
+		}
+		/*
+		<!--! ██   ██ ██   ██
+		<!--! ██   ██  ██ ██
+		<!--! ███████   ███
+		<!--! ██   ██  ██ ██
+		<!--! ██   ██ ██   ██
+		*/
+		h1,
+		h2,
+		h3,
+		h4 
+		{
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			width: 38cm;
+		}
+		h1 {
+			font-weight: bolder;
+			font-size: 50px;
+			border-bottom: solid white 0.125cm;
+			margin-left: 2cm;
+			white-space: pre;
+		}
+		h2 {
+			font-weight: bold;
+			font-size: 40px;
+			margin-left: 2cm;
+		}
+		h3 {
+			font-weight: bolder;
+			font-size: 30px;
+			margin-left: 2cm;
+		}
+		h4 {
+			font-weight: bolder;
+			font-size: 20px;
+			margin-left: 2cm;
+		}
+		/*
+		<!--+ ██████   █████  ██████   █████   ██████  ██████   █████  ██████  ██   ██ ███████
+		<!--+ ██   ██ ██   ██ ██   ██ ██   ██ ██       ██   ██ ██   ██ ██   ██ ██   ██ ██
+		<!--+ ██████  ███████ ██████  ███████ ██   ███ ██████  ███████ ██████  ███████ ███████
+		<!--+ ██      ██   ██ ██   ██ ██   ██ ██    ██ ██   ██ ██   ██ ██      ██   ██      ██
+		<!--+ ██      ██   ██ ██   ██ ██   ██  ██████  ██   ██ ██   ██ ██      ██   ██ ███████
+		*/
+		p {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: normal;
+			font-size: 18px;
+			margin-left: 2cm;
+			width: 38cm;
+		}
+		/*
+		<!--. ████████  █████  ██████  ██      ███████      ██
+		<!--.    ██    ██   ██ ██   ██ ██      ██          ███
+		<!--.    ██    ███████ ██████  ██      █████        ██
+		<!--.    ██    ██   ██ ██   ██ ██      ██           ██
+		<!--.    ██    ██   ██ ██████  ███████ ███████      ██
+		*/
+		.Table1 {
+			margin-left: 2cm;
+			width: 38cm;
+		}
+		.Table1 td {
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bold;
+			font-size: 18px;
+		}
+		.Table1 td a {
+			white-space: pre;
+		}
+		.Table1 tr:nth-child(1) td{
+			color: var(--foreground-main);
+			font-family: 'JetBrains Mono';
+			font-weight: bold;
+			font-size: 24px;
+		}
+		.Table1 tr:nth-child(1) td,
+		.Table1 tr:last-child td
+		{
+			border-bottom: 0.125cm white solid;
+		}
+		/*
+		<!--+  ██████  ██████  ██████  ███████
+		<!--+ ██      ██    ██ ██   ██ ██
+		<!--+ ██      ██    ██ ██   ██ █████
+		<!--+ ██      ██    ██ ██   ██ ██
+		<!--+  ██████  ██████  ██████  ███████
+		*/
+		.code {
+			background: var(--background-code);
+			white-space: pre;
+			margin-left: 2cm;
+			width: 34cm;
+			padding: 2cm;
+			border-radius: 24px;
+			line-height: 65%;
+			color: #606060;
+		}
+	</style>
+</head>
+<body>
+	<div class="page" id="Page_Title">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<br><br><br><br><br><br><br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br>
+			<span id="title_Trinity">TrinityOS</span><br>
+			<span id="title">SATAN Module</span><br>
+			<div id="title_line"></div><br>
+			<span id="title_date" class="date_current"></span>
+			<br>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+	<div class="page" id="Page_Index_1">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<table class="Table1">
+				<tr><td>Index</td></tr>
+				<tr><td><a href="#__TnD">1 Terms and Definitions</a></td></tr>
+				<tr><td><a href="#__TnD_Numbers"	>    1.1 Numbers</a></td></tr>
+				<tr><td><a href="#__TnD_Units"  	>    1.2 Units</a></td></tr>
+				<tr><td><a href="#__TnD_AccessTypes">    1.3 Access Types</a></td></tr>
+			</table>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+	<div class="page" id="Page_TermsAndDefinitions">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<h1 id="__TnD">1            Terms and Definitions</h1>
+			<h2 id="__TnD_Numbers">1.1 Numbers</h2>
+			<p>
+				Hexadecimal (base 16) numbers are marked using the prefix “0x”, likewise, base 4 numbers are
+				marked with “0q”, base 8 numbers with “0o”, binary numbers with “0b” and decimal numbers are
+				marked with “0d”, any numbers not marked with one of these prefixes is to be treated as
+				decimal (base 10).
+				Furthermore, all numbers are to be treated as big endian unless indicated otherwise.
+			</p>
+			<h2 id="__TnD_Units">1.2 Units</h2>
+			<table class="Table1">
+				<tr><td>Mnemonic</td><td>Size in Bytes</td></tr>
+				<tr><td>KB</td>	<td>1.000</td></tr>
+				<tr><td>KiB</td><td>1.024</td></tr>
+				<tr><td>MB</td>	<td>1.000.000</td></tr>
+				<tr><td>MiB</td><td>1.048.576</td></tr>
+				<tr><td>GB</td>	<td>1.000.000.000</td></tr>
+				<tr><td>GiB</td><td>1.073.741.824</td></tr>
+				<tr><td>TB</td>	<td>1.000.000.000.000</td></tr>
+				<tr><td>TiB</td><td>1.099.511.627.776</td></tr>
+				<tr><td>PB</td>	<td>1.000.000.000.000.000</td></tr>
+				<tr><td>PiB</td><td>1.125.899.906.842.624</td></tr>
+				<tr><td>EB</td>	<td>1.000.000.000.000.000.000</td></tr>
+				<tr><td>EiB</td><td>1.152.921.504.606.846.976</td></tr>
+				<tr><td>ZB</td>	<td>1.000.000.000.000.000.000.000</td></tr>
+				<tr><td>ZiB</td><td>1.180.591.620.717.411.303.424</td></tr>
+			</table>
+			<h2  id="__TnD_AccessTypes">1.3 Access Types</h2>
+			<table class="Table1">
+				<tr><td>Mnemonic</td><td>Description</td></tr>
+				<tr><td>R/W</td><td>The field can be written to and read from as normal</td></tr>
+				<tr><td>R/O</td><td>The field can be read from, but cannot (or should not) be written to, do not rely on the underlying memory being read-only</td></tr>
+				<tr><td>MBZ</td><td>The field must always have all its bits cleared to 0</td></tr>
+				<tr><td>MBO</td><td>The field must always have all its bits set to 1</td></tr>
+				<tr><td>N/A</td><td>The field cannot be accessed</td></tr>
+			</table>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+	<div class="page" id="Page_DataStructures">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+			<h1 id="__DS">2            Data Structures</h1>
+			<h2 id="__DS_PORT_EXTERNALS">2.1 PORT_EXTERNALS</h2>
+			<table class="Table1">
+				<tr><td>Start Byte</td><td>Field</td></tr>
+				<tr><td>0x00000</td><td>Received FIS</td></tr>
+				<tr><td>0x00100</td><td>Command List</td></tr>
+				<tr><td>0x00500</td><td>Command Tables</td></tr>
+				<tr><td>0x81500</td><td>HBA Configuration Space Address</td></tr>
+				<tr><td>0x81508</td><td>HBA Port Address</td></tr>
+				<tr><td>0x81510</td><td>Flags</td></tr>
+			</table>
+			<h3>2.1.1 C++ Struct Definition</h3>
+			<div class="code">
+struct PORT_EXTERNALS {<br>
+	union {<br>
+	struct {<br>
+	//<br>
+	//<br>
+	//<br>
+	ReceivedFIS rFIS;<br>
+	CommandHeader CommandList[32];<br>
+	CommandTable CommandTables[32];<br>
+	//<br>
+	//<br>
+	//<br>
+	HBA_T* HBAAddress; //Virtual Address of the HBA<br>
+	PORT* HBAPortAddress; // Virtual Address of the ports PCIe space<br>
+	uint64_t Flags;<br>
+	};<br>
+	uint8_t reserved[/*1MiB*/0x100000];<br>
+	};<br>
+};
+			</div>
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+<!-- 	- ███████ ███    ███ ██████  ████████ ██    ██     ██████   █████   ██████  ███████
+		- ██      ████  ████ ██   ██    ██     ██  ██      ██   ██ ██   ██ ██       ██
+		- █████   ██ ████ ██ ██████     ██      ████       ██████  ███████ ██   ███ █████
+		- ██      ██  ██  ██ ██         ██       ██        ██      ██   ██ ██    ██ ██
+		- ███████ ██      ██ ██         ██       ██        ██      ██   ██  ██████  ███████-->
+	<div class="page" id="Page_Empty" style="display: none;">
+		<div class="PageHeader"></div>
+		<div class="PageContent">
+		</div>
+		<div class="PageFooter"></div>
+	</div>
+</body>
+</html>
+<script>
+	var TITLE = "[TrinityOS] SATAN v0.1.0";
+	var COPYRIGHT_HOLDER = "Lilith Nitschke-Höfer (lilithnitschkehoefer@gmail.com)";
+	// ██   ██ ███████  █████  ██████  ███████ ██████
+	// ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+	// ███████ █████   ███████ ██   ██ █████   ██████
+	// ██   ██ ██      ██   ██ ██   ██ ██      ██   ██
+	// ██   ██ ███████ ██   ██ ██████  ███████ ██   ██
+	var headers = document.getElementsByClassName("PageHeader");
+	for (var i = 0; i < headers.length; i++) {
+		headers.item(i).innerHTML = `
+			<span class="date_current"></span>
+			<span class="header_title">${TITLE}</span><br>
+			<div class="header_line"></div><br>
+		`;
+	}
+ 	// ███████  ██████   ██████  ████████ ███████ ██████
+ 	// ██      ██    ██ ██    ██    ██    ██      ██   ██
+ 	// █████   ██    ██ ██    ██    ██    █████   ██████
+ 	// ██      ██    ██ ██    ██    ██    ██      ██   ██
+ 	// ██       ██████   ██████     ██    ███████ ██   ██
+	var footers = document.getElementsByClassName("PageFooter");
+	var FooterCount = 1;
+	for (var i = 0; i < footers.length; i++) {
+		footers.item(i).innerHTML = `
+			<div class="header_line"></div><br>
+			<span class="copyright">(c) ${COPYRIGHT_HOLDER}</span>
+			<span class="page_number">${FooterCount++}</span><br>
+		`;
+	}
+	// ██████   █████  ████████ ███████
+	// ██   ██ ██   ██    ██    ██
+	// ██   ██ ███████    ██    █████
+	// ██   ██ ██   ██    ██    ██
+	// ██████  ██   ██    ██    ███████
+	var elements = document.getElementsByClassName("date_current");
+	var RELEASE_DATE = "March 11, 2024";
+	for (var i = 0; i < elements.length; i++) {
+		elements.item(i).innerHTML = RELEASE_DATE;
+	}
+</script>

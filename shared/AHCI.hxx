@@ -33,6 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include "DISK.hxx"
 #include "SATA.hxx"
 #include "gcc.hxx"
+#include "print.hxx"
 
 #define HBA_PxIS_TFES 0x40000000
 
@@ -54,6 +55,8 @@ DEALINGS IN THE SOFTWARE.
 
 #define ATA_DEV_BUSY 0x80
 #define ATA_DEV_DRQ 0x08
+
+#define PACKED __packed__
 
 enum class FIS_TYPE : uint8_t
 {
@@ -258,4 +261,15 @@ namespace AHCI
         OK,
         NO_DISK
     };
+
+	struct deviceID {
+		uint64_t LBA;
+		uint64_t SectorCount;
+	};
+
+	//+ ███████ ██ ███████ ██      ██████      ███    ███  █████  ██████
+	//+ ██      ██ ██      ██      ██   ██     ████  ████ ██   ██ ██   ██
+	//+ █████   ██ █████   ██      ██   ██     ██ ████ ██ ███████ ██████
+	//+ ██      ██ ██      ██      ██   ██     ██  ██  ██ ██   ██ ██
+	//+ ██      ██ ███████ ███████ ██████      ██      ██ ██   ██ ██
 }//! namespace AHCI

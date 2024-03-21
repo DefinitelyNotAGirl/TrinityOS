@@ -41,6 +41,30 @@ uint64_t* PhysicalMemoryMapSize = (uint64_t*)0x1800000;
 TRINITY_MEMORY_VITAL* VitalMemoryValues = (TRINITY_MEMORY_VITAL*)(0x1800000+sizeof(uint64_t));
 TRINITY_MEMORY_MAP_ENTRY* PhysicalMemoryMap = (TRINITY_MEMORY_MAP_ENTRY*)(0x1800000+sizeof(uint64_t)+sizeof(TRINITY_MEMORY_VITAL));
 
+//, ███████ ██ ███████ ██      ██████      ███    ███  █████  ██████  ███████
+//, ██      ██ ██      ██      ██   ██     ████  ████ ██   ██ ██   ██ ██
+//, █████   ██ █████   ██      ██   ██     ██ ████ ██ ███████ ██████  ███████
+//, ██      ██ ██      ██      ██   ██     ██  ██  ██ ██   ██ ██           ██
+//, ██      ██ ███████ ███████ ██████      ██      ██ ██   ██ ██      ███████
+namespace paging::FieldMaps {
+	void print_pde(FieldMap<uint64_t, 10> *map)
+	{
+	}
+	FieldMap<uint64_t,10> PDE({
+			Field<uint64_t>((1<<0),FieldType::Boolean,"P"),
+			Field<uint64_t>((1<<1),FieldType::Boolean,"R/W"),
+			Field<uint64_t>((1<<2),FieldType::Boolean,"U/S"),
+			Field<uint64_t>((1<<3),FieldType::Boolean,"PWT"),
+			Field<uint64_t>((1<<4),FieldType::Boolean,"PCD"),
+			Field<uint64_t>((1<<5),FieldType::Boolean,"A"),
+			Field<uint64_t>((1<<6),FieldType::Boolean,"D"),
+			Field<uint64_t>((1<<8),FieldType::Boolean,"G"),
+			Field<uint64_t>((1<<12),FieldType::Boolean,"PAT"),
+			Field<uint64_t>((1<<63),FieldType::Boolean,"NX")
+		},nullptr
+	);
+}
+
 uint64_t getPhysicalAddress(uint64_t virtualAddress,PROCESS_INFO* process)
 {
     return ((process->PageTables.PAGES[virtualAddress/TRINITY_PAGE_SIZE] & 0xFFFFFFFE00000)+virtualAddress%TRINITY_PAGE_SIZE);

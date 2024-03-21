@@ -59,7 +59,7 @@ uint64_t PCIe_check_device(PCIE_DEVICE_CONFIG* config)
                 case(0x06):
                 {
                     //Serial ATA Controller
-                    SATA_check_controller(config);
+                    //SATA_check_controller(config);
                 }
             }
         }

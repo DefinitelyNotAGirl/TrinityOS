@@ -3,3 +3,4 @@
 # Copyright (c) 2023 DefinitelyNotAGirl@github 
 #
 m-all: m-klib m-INIT m-FUNCDIS m-MALLOC m-gfs0.fs m-fat32.fs m-SATAN
+m-all-clean: m-klib-clean m-INIT-clean m-FUNCDIS-clean m-MALLOC-clean m-gfs0.fs-clean m-fat32.fs-clean m-SATAN-clean

@@ -2,7 +2,7 @@
 Created Date: Thursday February 8th 2024
 Author: Lilith (definitelynotagirl115169@gmail.com)
 -----
-Last Modified: Thursday February 8th 2024 1:54:20 pm
+Last Modified: Thursday February 29th 2024 5:18:25 am
 Modified By: Lilith (definitelynotagirl115169@gmail.com)
 -----
 Copyright (c) 2024 Lilith (definitelynotagirl115169@gmail.com)
@@ -102,6 +102,11 @@ struct PCIE_HEADER_0
     uint8_t InterruptPin;
     uint8_t MinGrant;
     uint8_t MaxLatency;
+};
+
+struct PCIE_DEVICE_TRINITY_LOG
+{
+	PCIE_HEADER_0 Header;
 };
 
 struct PCIE_DEVICE_AHCI_CONTROLLER

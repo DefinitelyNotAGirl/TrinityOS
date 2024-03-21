@@ -18,31 +18,30 @@ fat32.fs_SOURCE_c_c=$(wildcard modules/fat32.fs/src/*.c)
 fat32.fs_OBJECTS_c_c=$(patsubst modules/fat32.fs/src/%.c,build/fat32.fs/%.o,$(fat32.fs_SOURCE_c_c))
 fat32.fs_DEPFILES_c_c=$(patsubst modules/fat32.fs/src/%.c,build/fat32.fs/%.d,$(fat32.fs_SOURCE_c_c))
 build/fat32.fs/%.o: modules/fat32.fs/src/%.asm
-	@as -M -MD -c -o $@ $<
-	$(info  	AS	$<)
+	@../TrinityOS/tools/as-new -W -M -MD -c -o $@ $<
+	$(info  	[35m[COMPILE][0m	$<)
 build/fat32.fs/%.o: modules/fat32.fs/src/%.s
-	@as -M -MD -c -o $@ $<
-	$(info  	AS	$<)
+	@../TrinityOS/tools/as-new -W -M -MD -c -o $@ $<
+	$(info  	[35m[COMPILE][0m	$<)
 build/fat32.fs/%.o: modules/fat32.fs/src/%.cpp
-	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/fat32.fs/inc -march=x86-64 -c -o $@ $<
-	$(info 	C++	$<)
+	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -w -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/fat32.fs/inc -march=x86-64 -c -o $@ $<
+	$(info 	[35m[COMPILE][0m	$<)
 build/fat32.fs/%.o: modules/fat32.fs/src/%.cxx
-	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/fat32.fs/inc -march=x86-64 -c -o $@ $<
-	$(info 	C++	$<)
+	@g++ -O0 -fno-rtti -fno-exceptions -nostdlib -ffreestanding -fno-stack-protector -fno-builtin -nostartfiles -Wunreachable-code -std=c++20 -w -Wno-literal-suffix -Wno-pointer-arith -MP -MD -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/fat32.fs/inc -march=x86-64 -c -o $@ $<
+	$(info 	[35m[COMPILE][0m	$<)
 build/fat32.fs/%.o: modules/fat32.fs/src/%.c
 	@gcc -Wunreachable-code -Imodules/klib/inc/ -Iinc/ -Ishared/ -Imodules/fat32.fs/inc -march=x86-64 -c -o $@ $<
-	$(info  	CC	$<)
+	$(info  	[35m[COMPILE][0m	$<)
 m-fat32.fs-clean:
-	@-rm -r build/fat32.fs/*.o
-	$(info  	DELETE	build/fat32.fs/*.o)
-	@-rm -r build/fat32.fs/*.d
-	$(info  	DELETE	build/fat32.fs/*.d)
+	@-rm -r build/fat32.fs/*.o > /dev/null
+	$(info  	[33m[CLEAN][0m	build/fat32.fs/*.o)
+	@-rm -r build/fat32.fs/*.d > /dev/null
+	$(info  	[33m[CLEAN][0m	build/fat32.fs/*.d)
 m-fat32.fs: out/fat32.fs.elf64
 out/fat32.fs.elf64:  $(fat32.fs_OBJECTS_asm_asm) $(fat32.fs_OBJECTS_asm_s) $(fat32.fs_OBJECTS_cpp_cpp) $(fat32.fs_OBJECTS_cpp_cxx) $(fat32.fs_OBJECTS_c_c)
-	@ld -nostdlib -T LDS/fat32.fs.ld  $(fat32.fs_OBJECTS_asm_asm) $(fat32.fs_OBJECTS_asm_s) $(fat32.fs_OBJECTS_cpp_cpp) $(fat32.fs_OBJECTS_cpp_cxx) $(fat32.fs_OBJECTS_c_c)  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c) -o out/fat32.fs.elf64
-	$(info  	LD	$@)
-	@objcopy out/fat32.fs.elf64 --remove-section text_klib --remove-section rodata_klib --remove-section data_klib --remove-section bss_klib
-	$(info  	OBJCOPY	$@)
+	@ld -nostdlib -w -T LDS/fat32.fs.ld  $(fat32.fs_OBJECTS_asm_asm) $(fat32.fs_OBJECTS_asm_s) $(fat32.fs_OBJECTS_cpp_cpp) $(fat32.fs_OBJECTS_cpp_cxx) $(fat32.fs_OBJECTS_c_c)  $(klib_OBJECTS_asm_asm) $(klib_OBJECTS_asm_s) $(klib_OBJECTS_cpp_cpp) $(klib_OBJECTS_cpp_cxx) $(klib_OBJECTS_c_c) -o out/fat32.fs.elf64
+	$(info  	[34m[LINK][0m	$@)
+	@objcopy out/fat32.fs.elf64  --remove-section text_klib --remove-section rodata_klib --remove-section data_klib --remove-section bss_klib &> /dev/null
 -include $(fat32.fs_DEPFILES_asm_asm)
 -include $(fat32.fs_DEPFILES_asm_s)
 -include $(fat32.fs_DEPFILES_cpp_cpp)
